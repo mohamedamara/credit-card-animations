@@ -1,4 +1,4 @@
-import 'package:credit_card_animations/views/scaffolding_view.dart';
+import 'package:credit_card_animations/wrapper_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,7 +20,7 @@ class App extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
-      home: const ScaffoldingView(),
+      home: const WrapperView(),
     );
   }
 }

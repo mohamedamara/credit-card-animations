@@ -1,18 +1,18 @@
 import 'package:credit_card_animations/constants/assets_constants.dart';
 import 'package:flutter/material.dart';
 
-import '../views/scaffolding_view.dart';
+import '../models/credit_card_number_model.dart';
 
 class CreditCard extends StatefulWidget {
   const CreditCard({
     super.key,
-    required this.enterAnimationController,
-    required this.leaveAnimationController,
+    required this.creditCardNumberEnterAnimationController,
+    required this.creditCardNumberLeaveAnimationController,
     required this.creditCardNumbers,
   });
 
-  final AnimationController enterAnimationController;
-  final AnimationController leaveAnimationController;
+  final AnimationController creditCardNumberEnterAnimationController;
+  final AnimationController creditCardNumberLeaveAnimationController;
   final List<CreditCardNumberModel> creditCardNumbers;
 
   @override
@@ -29,7 +29,7 @@ class _CreditCardState extends State<CreditCard> {
     super.initState();
 
     final curve = CurvedAnimation(
-      parent: widget.enterAnimationController,
+      parent: widget.creditCardNumberEnterAnimationController,
       curve: Curves.easeInOut,
     );
     _offsetAnimation = Tween<Offset>(
@@ -38,7 +38,7 @@ class _CreditCardState extends State<CreditCard> {
     ).animate(curve);
 
     final leaveCurve = CurvedAnimation(
-      parent: widget.leaveAnimationController,
+      parent: widget.creditCardNumberLeaveAnimationController,
       curve: Curves.easeInOut,
     );
     _leaveOffsetAnimation = Tween<Offset>(
@@ -105,7 +105,7 @@ class _CreditCardState extends State<CreditCard> {
             child: Row(
               children: [
                 for (int i = 0; i < widget.creditCardNumbers.length; i++) ...[
-                  if (widget.creditCardNumbers[i].isNewValue) ...[
+                  if (widget.creditCardNumbers[i].isNewlyEnteredValue) ...[
                     Stack(
                       alignment: Alignment.center,
                       children: [
@@ -114,7 +114,7 @@ class _CreditCardState extends State<CreditCard> {
                           child: SlideTransition(
                             position: _leaveOffsetAnimation,
                             child: Text(
-                              widget.creditCardNumbers[i].fadeText,
+                              widget.creditCardNumbers[i].leaveAnimatedValue,
                               style: const TextStyle(
                                 fontSize: 30,
                                 color: Colors.white,
@@ -125,7 +125,8 @@ class _CreditCardState extends State<CreditCard> {
                           ),
                         ),
                         FadeTransition(
-                          opacity: widget.enterAnimationController,
+                          opacity:
+                              widget.creditCardNumberEnterAnimationController,
                           child: SlideTransition(
                             position: _offsetAnimation,
                             child: Text(
@@ -156,37 +157,6 @@ class _CreditCardState extends State<CreditCard> {
                     const SizedBox(width: 20),
                   ],
                 ],
-
-                // AnimatedSwitcher(
-                //   duration: const Duration(milliseconds: 250),
-                //   reverseDuration: Duration.zero,
-                //   switchInCurve: Curves.easeInOut,
-                //   switchOutCurve: Curves.easeInOut,
-                //   transitionBuilder: (
-                //     Widget child,
-                //     Animation<double> animation,
-                //   ) {
-                //     return SlideTransition(
-                //       position: Tween<Offset>(
-                //         begin: const Offset(0.0, 0.3),
-                //         end: const Offset(0.0, 0.0),
-                //       ).animate(animation),
-                //       child: child,
-                //     );
-                //   },
-                //   child: Text(
-                //     textValue,
-                //     key: ValueKey<String>(textValue),
-                //     style: const TextStyle(fontSize: 45, color: Colors.white),
-                //   ),
-                // )
-                // Text(
-                //   '#',
-                //   style: TextStyle(
-                //     fontSize: 28,
-                //     color: Colors.white,
-                //   ),
-                // ),
               ],
             ),
           ),
