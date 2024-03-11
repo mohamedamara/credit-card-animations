@@ -102,7 +102,6 @@ class _WrapperViewState extends State<WrapperView>
     var str = newValue.trim().replaceAll(' ', '');
     _newlyCreditCardNumberValueTypedIndex = str.length;
     _newlyCreditCardNumberValueTyped = str;
-    print(_newlyCreditCardNumberValueTypedIndex);
     if (_newlyCreditCardNumberValueTypedIndex >
         _lastCreditCardNumberValueTypedIndex) {
       // for (int i = 0;
