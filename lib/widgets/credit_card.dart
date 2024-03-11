@@ -100,7 +100,7 @@ class _CreditCardState extends State<CreditCard> {
             ),
           ),
           Positioned(
-            top: 150,
+            top: 122,
             left: 25,
             child: Row(
               children: [
