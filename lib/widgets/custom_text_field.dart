@@ -30,7 +30,7 @@ class CustomTextField extends StatelessWidget {
       child: TextField(
         controller: controller,
         maxLength: maxLength,
-        enableInteractiveSelection: true,
+        enableInteractiveSelection: false,
         keyboardType: keyboardType,
         style: const TextStyle(
           color: Color(0xFF1a3b5d),

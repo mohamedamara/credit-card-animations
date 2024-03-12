@@ -169,10 +169,10 @@ class _CreditCardState extends State<CreditCard> {
               width: 350,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 16,
+                itemCount: widget.creditCardName.length,
                 itemBuilder: (context, index) {
                   return Text(
-                    '$index',
+                    widget.creditCardName[index],
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,

@@ -79,7 +79,6 @@ class CreditCardForm extends StatelessWidget {
           CustomTextField(
             controller: creditCardNameTextEditingController,
             keyboardType: TextInputType.name,
-            maxLength: 20,
             onChanged: onCreditCardNameValueChanged,
           ),
         ],

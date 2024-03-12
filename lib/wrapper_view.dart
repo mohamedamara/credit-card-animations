@@ -30,8 +30,10 @@ class _WrapperViewState extends State<WrapperView>
 
   final List<String> _creditCardName = [];
 
-  int _lastCreditCardNumbersValueTypedLength = 0;
-  String _lastCreditCardNumbersValueTyped = '';
+  int _oldCreditCardNumbersValueLength = 0;
+  String _oldCreditCardNumbersValue = '';
+
+  int _oldCreditCardNameValueLength = 0;
 
   @override
   void initState() {
@@ -106,12 +108,10 @@ class _WrapperViewState extends State<WrapperView>
     );
   }
 
-  void _onCreditCardNumbersValueChanged(newValue) {
+  void _onCreditCardNumbersValueChanged(String newValue) {
     var numbersValue = newValue.trim().replaceAll(' ', '');
-    var newlyCreditCardNumbersValueTypedLength = numbersValue.length;
-    var newlyCreditCardNumbersValueTyped = numbersValue;
-    if (newlyCreditCardNumbersValueTypedLength >
-        _lastCreditCardNumbersValueTypedLength) {
+    var newCreditCardNumbersValueLength = numbersValue.length;
+    if (newCreditCardNumbersValueLength > _oldCreditCardNumbersValueLength) {
       // for (int i = 0;
       //     i < creditCardNumbers.length;
       //     i++) {
@@ -136,15 +136,15 @@ class _WrapperViewState extends State<WrapperView>
       //     );
       //   }
       // }
-      for (int i = _lastCreditCardNumbersValueTypedLength;
-          i < newlyCreditCardNumbersValueTypedLength;
+      for (int i = _oldCreditCardNumbersValueLength;
+          i < newCreditCardNumbersValueLength;
           i++) {
         _creditCardNumbers[i] = CreditCardNumberModel(
           value: (i >= 4 && i <= 11) ? '*' : numbersValue[i],
           isNewlyEnteredValue: true,
         );
       }
-      for (int i = newlyCreditCardNumbersValueTypedLength;
+      for (int i = newCreditCardNumbersValueLength;
           i < _creditCardNumbers.length;
           i++) {
         _creditCardNumbers[i] = CreditCardNumberModel(
@@ -152,22 +152,22 @@ class _WrapperViewState extends State<WrapperView>
           isNewlyEnteredValue: false,
         );
       }
-      for (int i = 0; i < _lastCreditCardNumbersValueTypedLength; i++) {
+      for (int i = 0; i < _oldCreditCardNumbersValueLength; i++) {
         _creditCardNumbers[i] = CreditCardNumberModel(
           value: (i >= 4 && i <= 11) ? '*' : numbersValue[i],
           isNewlyEnteredValue: false,
         );
       }
     } else {
-      for (int i = newlyCreditCardNumbersValueTypedLength;
-          i < _lastCreditCardNumbersValueTypedLength;
+      for (int i = newCreditCardNumbersValueLength;
+          i < _oldCreditCardNumbersValueLength;
           i++) {
         _creditCardNumbers[i] = CreditCardNumberModel(
           value: '#',
           isNewlyEnteredValue: true,
           leaveAnimatedValue: (i >= 4 && i <= 11)
               ? '*'
-              : _lastCreditCardNumbersValueTyped.substring(
+              : _oldCreditCardNumbersValue.substring(
                   i,
                   i + 1,
                 ),
@@ -179,7 +179,7 @@ class _WrapperViewState extends State<WrapperView>
           isNewlyEnteredValue: false,
         );
       }
-      for (int i = _lastCreditCardNumbersValueTypedLength;
+      for (int i = _oldCreditCardNumbersValueLength;
           i < _creditCardNumbers.length;
           i++) {
         _creditCardNumbers[i] = CreditCardNumberModel(
@@ -193,11 +193,52 @@ class _WrapperViewState extends State<WrapperView>
     _creditCardNumberLeaveAnimationController.forward();
     _creditCardNumberEnterAnimationController.reset();
     _creditCardNumberEnterAnimationController.forward();
-    _lastCreditCardNumbersValueTypedLength =
-        newlyCreditCardNumbersValueTypedLength;
-    _lastCreditCardNumbersValueTyped = newlyCreditCardNumbersValueTyped;
+    _oldCreditCardNumbersValue = numbersValue;
+    _oldCreditCardNumbersValueLength = newCreditCardNumbersValueLength;
     setState(() {});
   }
 
-  void _onCreditCardNameValueChanged(newValue) {}
+  void _onCreditCardNameValueChanged(String newValue) {
+    var nameValue = newValue;
+    var newCreditCardNameValueLength = newValue.length;
+    var cardNameTextFieldCursorPostion =
+        _creditCardNameTextEditingController.selection.base.offset;
+
+    var newlyAddedCharactersLength =
+        newCreditCardNameValueLength - _oldCreditCardNameValueLength;
+
+    if (newCreditCardNameValueLength > _oldCreditCardNameValueLength) {
+      if ((cardNameTextFieldCursorPostion - newlyAddedCharactersLength) <
+          _oldCreditCardNameValueLength) {
+        for (int i =
+                (cardNameTextFieldCursorPostion - newlyAddedCharactersLength);
+            i <
+                (newlyAddedCharactersLength +
+                    (cardNameTextFieldCursorPostion -
+                        newlyAddedCharactersLength));
+            i++) {
+          _creditCardName.insert(i, nameValue[i]);
+        }
+      } else {
+        for (int i = _oldCreditCardNameValueLength;
+            i < newCreditCardNameValueLength;
+            i++) {
+          _creditCardName.add(nameValue[i]);
+        }
+      }
+    } else {
+      var newlyRemovedCharactersLength =
+          _oldCreditCardNameValueLength - newCreditCardNameValueLength;
+
+      for (int i =
+              ((newlyRemovedCharactersLength + cardNameTextFieldCursorPostion) -
+                  1);
+          i > (cardNameTextFieldCursorPostion - 1);
+          i--) {
+        _creditCardName.removeAt(i);
+      }
+    }
+    _oldCreditCardNameValueLength = newCreditCardNameValueLength;
+    setState(() {});
+  }
 }
