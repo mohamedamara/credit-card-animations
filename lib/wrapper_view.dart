@@ -13,11 +13,14 @@ class WrapperView extends StatefulWidget {
 
 class _WrapperViewState extends State<WrapperView>
     with TickerProviderStateMixin {
+  late TextEditingController _creditCardNumbersTextEditingController;
+
   late AnimationController _creditCardNumberEnterAnimationController;
   late AnimationController _creditCardNumberLeaveAnimationController;
 
   final List<CreditCardNumberModel> _creditCardNumbers = List.generate(
     16,
+    growable: false,
     (index) => CreditCardNumberModel(
       value: '#',
       isNewlyEnteredValue: false,
@@ -32,6 +35,7 @@ class _WrapperViewState extends State<WrapperView>
   @override
   void initState() {
     super.initState();
+    _creditCardNumbersTextEditingController = TextEditingController();
     _creditCardNumberEnterAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 250),
@@ -44,6 +48,7 @@ class _WrapperViewState extends State<WrapperView>
 
   @override
   void dispose() {
+    _creditCardNumbersTextEditingController.dispose();
     _creditCardNumberEnterAnimationController.dispose();
     _creditCardNumberLeaveAnimationController.dispose();
     super.dispose();
@@ -66,25 +71,20 @@ class _WrapperViewState extends State<WrapperView>
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: CreditCardForm(
-                        onChanged: _creditCardNumbersTextFieldOnValueChanged,
+                        creditCardNumbersTextEditingController:
+                            _creditCardNumbersTextEditingController,
+                        onCreditCardNumbersValueChanged:
+                            _creditCardNumbersTextFieldOnValueChanged,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        _creditCardNumberLeaveAnimationController.reset();
-                        _creditCardNumberLeaveAnimationController.forward();
-                        _creditCardNumberEnterAnimationController.reset();
-                        _creditCardNumberEnterAnimationController.forward();
-                      },
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: CreditCard(
-                          creditCardNumberEnterAnimationController:
-                              _creditCardNumberEnterAnimationController,
-                          creditCardNumberLeaveAnimationController:
-                              _creditCardNumberLeaveAnimationController,
-                          creditCardNumbers: _creditCardNumbers,
-                        ),
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: CreditCard(
+                        creditCardNumberEnterAnimationController:
+                            _creditCardNumberEnterAnimationController,
+                        creditCardNumberLeaveAnimationController:
+                            _creditCardNumberLeaveAnimationController,
+                        creditCardNumbers: _creditCardNumbers,
                       ),
                     ),
                   ],

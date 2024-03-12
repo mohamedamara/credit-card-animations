@@ -1,31 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../utils/credit_card_numbers_input_formatter.dart';
+import '../utils/blank_space_after_every_4_characters_input_formatter.dart';
 
-class CreditCardForm extends StatefulWidget {
-  const CreditCardForm({super.key, required this.onChanged});
+class CreditCardForm extends StatelessWidget {
+  const CreditCardForm({
+    super.key,
+    required this.creditCardNumbersTextEditingController,
+    required this.onCreditCardNumbersValueChanged,
+  });
 
-  final void Function(String newCreditCardNumbersValue)? onChanged;
-
-  @override
-  State<CreditCardForm> createState() => _CreditCardFormState();
-}
-
-class _CreditCardFormState extends State<CreditCardForm> {
-  late TextEditingController _creditCardNumbersTextEditingController;
-
-  @override
-  void initState() {
-    super.initState();
-    _creditCardNumbersTextEditingController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _creditCardNumbersTextEditingController.dispose();
-    super.dispose();
-  }
+  final TextEditingController creditCardNumbersTextEditingController;
+  final void Function(String newCreditCardNumbersValue)?
+      onCreditCardNumbersValueChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +56,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
               ),
             ),
             child: TextField(
-              controller: _creditCardNumbersTextEditingController,
+              controller: creditCardNumbersTextEditingController,
               maxLength: 19,
               enableInteractiveSelection: true,
               style: const TextStyle(
@@ -104,7 +91,7 @@ class _CreditCardFormState extends State<CreditCardForm> {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              onChanged: widget.onChanged,
+              onChanged: onCreditCardNumbersValueChanged,
             ),
           ),
         ],
