@@ -1,3 +1,4 @@
+import 'package:credit_card_animations/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,11 +9,16 @@ class CreditCardForm extends StatelessWidget {
     super.key,
     required this.creditCardNumbersTextEditingController,
     required this.onCreditCardNumbersValueChanged,
+    required this.creditCardNameTextEditingController,
+    required this.onCreditCardNameValueChanged,
   });
 
   final TextEditingController creditCardNumbersTextEditingController;
   final void Function(String newCreditCardNumbersValue)?
       onCreditCardNumbersValueChanged;
+  final TextEditingController creditCardNameTextEditingController;
+  final void Function(String newCreditCardNameValue)?
+      onCreditCardNameValueChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -47,52 +53,34 @@ class CreditCardForm extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          Theme(
-            data: Theme.of(context).copyWith(
-              textSelectionTheme: TextSelectionThemeData(
-                cursorColor: Colors.blue.shade100,
-                selectionColor: Colors.blue.shade100,
-                selectionHandleColor: Colors.blue.shade100,
-              ),
-            ),
-            child: TextField(
-              controller: creditCardNumbersTextEditingController,
-              maxLength: 19,
-              enableInteractiveSelection: true,
-              style: const TextStyle(
-                color: Color(0xFF1a3b5d),
-                fontSize: 18,
+          CustomTextField(
+            controller: creditCardNumbersTextEditingController,
+            keyboardType: TextInputType.number,
+            maxLength: 19,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              BlankSpaceAfterEvery4charactersInputFormatter(),
+            ],
+            onChanged: onCreditCardNumbersValueChanged,
+          ),
+          const SizedBox(height: 20),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Card Name',
+              style: TextStyle(
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
+                color: Color(0xFF1A3B5B),
               ),
-              cursorColor: Colors.black,
-              cursorWidth: 1,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                BlankSpaceAfterEvery4charactersInputFormatter(),
-              ],
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 17,
-                  horizontal: 17,
-                ),
-                counterText: '',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Color(0xFFced6e0),
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Color(0xFF3d9cff),
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              onChanged: onCreditCardNumbersValueChanged,
             ),
+          ),
+          const SizedBox(height: 5),
+          CustomTextField(
+            controller: creditCardNameTextEditingController,
+            keyboardType: TextInputType.name,
+            maxLength: 20,
+            onChanged: onCreditCardNameValueChanged,
           ),
         ],
       ),

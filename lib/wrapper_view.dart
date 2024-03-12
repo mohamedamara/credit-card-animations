@@ -14,6 +14,7 @@ class WrapperView extends StatefulWidget {
 class _WrapperViewState extends State<WrapperView>
     with TickerProviderStateMixin {
   late TextEditingController _creditCardNumbersTextEditingController;
+  late TextEditingController _creditCardNameTextEditingController;
 
   late AnimationController _creditCardNumberEnterAnimationController;
   late AnimationController _creditCardNumberLeaveAnimationController;
@@ -36,6 +37,7 @@ class _WrapperViewState extends State<WrapperView>
   void initState() {
     super.initState();
     _creditCardNumbersTextEditingController = TextEditingController();
+    _creditCardNameTextEditingController = TextEditingController();
     _creditCardNumberEnterAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 250),
@@ -49,6 +51,7 @@ class _WrapperViewState extends State<WrapperView>
   @override
   void dispose() {
     _creditCardNumbersTextEditingController.dispose();
+    _creditCardNameTextEditingController.dispose();
     _creditCardNumberEnterAnimationController.dispose();
     _creditCardNumberLeaveAnimationController.dispose();
     super.dispose();
@@ -74,7 +77,11 @@ class _WrapperViewState extends State<WrapperView>
                         creditCardNumbersTextEditingController:
                             _creditCardNumbersTextEditingController,
                         onCreditCardNumbersValueChanged:
-                            _creditCardNumbersTextFieldOnValueChanged,
+                            _onCreditCardNumbersValueChanged,
+                        creditCardNameTextEditingController:
+                            _creditCardNameTextEditingController,
+                        onCreditCardNameValueChanged:
+                            _onCreditCardNameValueChanged,
                       ),
                     ),
                     Align(
@@ -98,7 +105,7 @@ class _WrapperViewState extends State<WrapperView>
     );
   }
 
-  void _creditCardNumbersTextFieldOnValueChanged(newValue) {
+  void _onCreditCardNumbersValueChanged(newValue) {
     var str = newValue.trim().replaceAll(' ', '');
     _newlyCreditCardNumberValueTypedIndex = str.length;
     _newlyCreditCardNumberValueTyped = str;
@@ -190,4 +197,6 @@ class _WrapperViewState extends State<WrapperView>
         _newlyCreditCardNumberValueTypedIndex;
     _lastCreditCardNumberValueTyped = _newlyCreditCardNumberValueTyped;
   }
+
+  void _onCreditCardNameValueChanged(newValue) {}
 }
