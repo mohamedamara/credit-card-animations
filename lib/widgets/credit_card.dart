@@ -9,46 +9,47 @@ class CreditCard extends StatefulWidget {
     required this.creditCardNumberEnterAnimationController,
     required this.creditCardNumberLeaveAnimationController,
     required this.creditCardNumbers,
+    required this.creditCardName,
   });
 
   final AnimationController creditCardNumberEnterAnimationController;
   final AnimationController creditCardNumberLeaveAnimationController;
   final List<CreditCardNumberModel> creditCardNumbers;
+  final List<String> creditCardName;
 
   @override
   State<CreditCard> createState() => _CreditCardState();
 }
 
 class _CreditCardState extends State<CreditCard> {
-  late Animation<Offset> _offsetAnimation;
-  late Animation<Offset> _leaveOffsetAnimation;
-  late Animation<double> _leaveOpacityAnimation;
+  late Animation<Offset> _numberEnterOffsetAnimation;
+  late Animation<Offset> _numberLeaveOffsetAnimation;
+  late Animation<double> _numberleaveOpacityAnimation;
 
   @override
   void initState() {
     super.initState();
-
-    final curve = CurvedAnimation(
-      parent: widget.creditCardNumberEnterAnimationController,
-      curve: Curves.easeInOut,
-    );
-    _offsetAnimation = Tween<Offset>(
+    _numberEnterOffsetAnimation = Tween<Offset>(
       begin: const Offset(0.0, 0.3),
       end: Offset.zero,
-    ).animate(curve);
-
-    final leaveCurve = CurvedAnimation(
+    ).animate(
+      CurvedAnimation(
+        parent: widget.creditCardNumberEnterAnimationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+    final numberLeaveCurvedAnimation = CurvedAnimation(
       parent: widget.creditCardNumberLeaveAnimationController,
       curve: Curves.easeInOut,
     );
-    _leaveOffsetAnimation = Tween<Offset>(
+    _numberLeaveOffsetAnimation = Tween<Offset>(
       begin: const Offset(0.0, 0.0),
       end: const Offset(0.0, -0.3),
-    ).animate(leaveCurve);
-    _leaveOpacityAnimation = Tween<double>(
+    ).animate(numberLeaveCurvedAnimation);
+    _numberleaveOpacityAnimation = Tween<double>(
       begin: 1,
       end: 0,
-    ).animate(leaveCurve);
+    ).animate(numberLeaveCurvedAnimation);
   }
 
   @override
@@ -110,9 +111,9 @@ class _CreditCardState extends State<CreditCard> {
                       alignment: Alignment.center,
                       children: [
                         FadeTransition(
-                          opacity: _leaveOpacityAnimation,
+                          opacity: _numberleaveOpacityAnimation,
                           child: SlideTransition(
-                            position: _leaveOffsetAnimation,
+                            position: _numberLeaveOffsetAnimation,
                             child: Text(
                               widget.creditCardNumbers[i].leaveAnimatedValue,
                               style: const TextStyle(
@@ -128,7 +129,7 @@ class _CreditCardState extends State<CreditCard> {
                           opacity:
                               widget.creditCardNumberEnterAnimationController,
                           child: SlideTransition(
-                            position: _offsetAnimation,
+                            position: _numberEnterOffsetAnimation,
                             child: Text(
                               widget.creditCardNumbers[i].value,
                               style: const TextStyle(
@@ -158,6 +159,29 @@ class _CreditCardState extends State<CreditCard> {
                   ],
                 ],
               ],
+            ),
+          ),
+          Positioned(
+            top: 180,
+            left: 25,
+            child: SizedBox(
+              height: 100,
+              width: 350,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 16,
+                itemBuilder: (context, index) {
+                  return Text(
+                    '$index',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 1,
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ],
