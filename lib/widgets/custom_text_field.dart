@@ -5,6 +5,7 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     required this.controller,
+    required this.focusNode,
     required this.keyboardType,
     this.maxLength,
     this.inputFormatters,
@@ -12,6 +13,7 @@ class CustomTextField extends StatelessWidget {
   });
 
   final TextEditingController controller;
+  final FocusNode focusNode;
   final TextInputType? keyboardType;
   final int? maxLength;
   final List<TextInputFormatter>? inputFormatters;
@@ -29,8 +31,9 @@ class CustomTextField extends StatelessWidget {
       ),
       child: TextField(
         controller: controller,
+        focusNode: focusNode,
         maxLength: maxLength,
-        enableInteractiveSelection: false,
+        enableInteractiveSelection: true,
         keyboardType: keyboardType,
         style: const TextStyle(
           color: Color(0xFF1a3b5d),

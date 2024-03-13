@@ -14,7 +14,9 @@ class WrapperView extends StatefulWidget {
 class _WrapperViewState extends State<WrapperView>
     with TickerProviderStateMixin {
   late TextEditingController _creditCardNumbersTextEditingController;
-  late TextEditingController _creditCardNameTextEditingController;
+  late TextEditingController _creditCardHolderNameTextEditingController;
+  late FocusNode _creditCardNumbersTextFieldFocusNode;
+  late FocusNode _creditCardHolderNameTextFieldFocusNode;
 
   late AnimationController _creditCardNumberEnterAnimationController;
   late AnimationController _creditCardNumberLeaveAnimationController;
@@ -28,18 +30,27 @@ class _WrapperViewState extends State<WrapperView>
     ),
   );
 
-  final List<String> _creditCardName = [];
+  final List<String> _creditCardHolderName = [];
 
   int _oldCreditCardNumbersValueLength = 0;
   String _oldCreditCardNumbersValue = '';
 
-  int _oldCreditCardNameValueLength = 0;
+  int _oldCreditCardHolderNameValueLength = 0;
+
+  Offset _creditCardFocusCoverOffset = Offset.zero;
+  Size _creditCardFocusCoverSize = const Size(430, 270);
+
+  bool _allowEmptyCreditCardHolderNameAnimation = false;
 
   @override
   void initState() {
     super.initState();
     _creditCardNumbersTextEditingController = TextEditingController();
-    _creditCardNameTextEditingController = TextEditingController();
+    _creditCardHolderNameTextEditingController = TextEditingController();
+    _creditCardNumbersTextFieldFocusNode = FocusNode();
+    _creditCardHolderNameTextFieldFocusNode = FocusNode();
+    _creditCardNumbersTextFieldFocusNode.addListener(_onFocusChange);
+    _creditCardHolderNameTextFieldFocusNode.addListener(_onFocusChange);
     _creditCardNumberEnterAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 250),
@@ -53,55 +64,107 @@ class _WrapperViewState extends State<WrapperView>
   @override
   void dispose() {
     _creditCardNumbersTextEditingController.dispose();
-    _creditCardNameTextEditingController.dispose();
+    _creditCardHolderNameTextEditingController.dispose();
+    _creditCardNumbersTextFieldFocusNode.dispose();
+    _creditCardHolderNameTextFieldFocusNode.dispose();
+    _creditCardNumbersTextFieldFocusNode.removeListener(_onFocusChange);
+    _creditCardHolderNameTextFieldFocusNode.removeListener(_onFocusChange);
     _creditCardNumberEnterAnimationController.dispose();
     _creditCardNumberLeaveAnimationController.dispose();
     super.dispose();
   }
 
+  void _onFocusChange() {
+    if (_creditCardNumbersTextFieldFocusNode.hasFocus) {
+      setState(() {
+        _creditCardFocusCoverOffset = const Offset(13, 112);
+        _creditCardFocusCoverSize = const Size(371, 53);
+      });
+      return;
+    }
+    if (_creditCardHolderNameTextFieldFocusNode.hasFocus) {
+      setState(() {
+        _creditCardFocusCoverOffset = const Offset(13, 186);
+        _creditCardFocusCoverSize = const Size(315, 63);
+      });
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFDDEEFC),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 50),
-              SizedBox(
-                height: 710,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: CreditCardForm(
-                        creditCardNumbersTextEditingController:
-                            _creditCardNumbersTextEditingController,
-                        onCreditCardNumbersValueChanged:
-                            _onCreditCardNumbersValueChanged,
-                        creditCardNameTextEditingController:
-                            _creditCardNameTextEditingController,
-                        onCreditCardNameValueChanged:
-                            _onCreditCardNameValueChanged,
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _creditCardFocusCoverOffset = Offset.zero;
+          _creditCardFocusCoverSize = const Size(430, 270);
+        });
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xFFDDEEFC),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 50),
+                SizedBox(
+                  height: 710,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: CreditCardForm(
+                          creditCardNumbersTextEditingController:
+                              _creditCardNumbersTextEditingController,
+                          onCreditCardNumbersValueChanged:
+                              _onCreditCardNumbersValueChanged,
+                          creditCardNumbersTextFieldFocusNode:
+                              _creditCardNumbersTextFieldFocusNode,
+                          creditCardHolderNameTextEditingController:
+                              _creditCardHolderNameTextEditingController,
+                          onCreditCardHolderNameValueChanged:
+                              _onCreditCardHolderNameValueChanged,
+                          creditCardHolderNameTextFieldFocusNode:
+                              _creditCardHolderNameTextFieldFocusNode,
+                        ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: CreditCard(
-                        creditCardNumberEnterAnimationController:
-                            _creditCardNumberEnterAnimationController,
-                        creditCardNumberLeaveAnimationController:
-                            _creditCardNumberLeaveAnimationController,
-                        creditCardNumbers: _creditCardNumbers,
-                        creditCardName: _creditCardName,
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: CreditCard(
+                          creditCardNumberEnterAnimationController:
+                              _creditCardNumberEnterAnimationController,
+                          creditCardNumberLeaveAnimationController:
+                              _creditCardNumberLeaveAnimationController,
+                          creditCardNumbers: _creditCardNumbers,
+                          creditCardHolderName: _creditCardHolderName,
+                          creditCardFocusCoverOffset:
+                              _creditCardFocusCoverOffset,
+                          onCreditCardFocusCoverOffsetChanged: (offset) {
+                            setState(() {
+                              _creditCardFocusCoverOffset = offset;
+                            });
+                          },
+                          creditCardFocusCoverSize: _creditCardFocusCoverSize,
+                          onCreditCardFocusCoverSizeChanged: (size) {
+                            setState(() {
+                              _creditCardFocusCoverSize = size;
+                            });
+                          },
+                          creditCardNumbersTextFieldFocusNode:
+                              _creditCardNumbersTextFieldFocusNode,
+                          creditCardHolderNameTextFieldFocusNode:
+                              _creditCardHolderNameTextFieldFocusNode,
+                          allowEmptyCreditCardHolderNameAnimation:
+                              _allowEmptyCreditCardHolderNameAnimation,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 50),
-            ],
+                const SizedBox(height: 50),
+              ],
+            ),
           ),
         ),
       ),
@@ -112,30 +175,6 @@ class _WrapperViewState extends State<WrapperView>
     var numbersValue = newValue.trim().replaceAll(' ', '');
     var newCreditCardNumbersValueLength = numbersValue.length;
     if (newCreditCardNumbersValueLength > _oldCreditCardNumbersValueLength) {
-      // for (int i = 0;
-      //     i < creditCardNumbers.length;
-      //     i++) {
-      //   if (i >= lastEnteredValueIndex &&
-      //       i < newIndex) {
-      //     creditCardNumbers[i] = CreditCardNumberModel(
-      //       value: str[i],
-      //       isNewValue: true,
-      //       fadeText: '#',
-      //     );
-      //   } else if (i >= newIndex) {
-      //     creditCardNumbers[i] = CreditCardNumberModel(
-      //       value: '#',
-      //       isNewValue: false,
-      //       fadeText: '#',
-      //     );
-      //   } else {
-      //     creditCardNumbers[i] = CreditCardNumberModel(
-      //       value: str[i],
-      //       isNewValue: false,
-      //       fadeText: '#',
-      //     );
-      //   }
-      // }
       for (int i = _oldCreditCardNumbersValueLength;
           i < newCreditCardNumbersValueLength;
           i++) {
@@ -188,7 +227,6 @@ class _WrapperViewState extends State<WrapperView>
         );
       }
     }
-
     _creditCardNumberLeaveAnimationController.reset();
     _creditCardNumberLeaveAnimationController.forward();
     _creditCardNumberEnterAnimationController.reset();
@@ -198,18 +236,18 @@ class _WrapperViewState extends State<WrapperView>
     setState(() {});
   }
 
-  void _onCreditCardNameValueChanged(String newValue) {
+  void _onCreditCardHolderNameValueChanged(String newValue) {
     var nameValue = newValue;
     var newCreditCardNameValueLength = newValue.length;
     var cardNameTextFieldCursorPostion =
-        _creditCardNameTextEditingController.selection.base.offset;
+        _creditCardHolderNameTextEditingController.selection.base.offset;
 
     var newlyAddedCharactersLength =
-        newCreditCardNameValueLength - _oldCreditCardNameValueLength;
+        newCreditCardNameValueLength - _oldCreditCardHolderNameValueLength;
 
-    if (newCreditCardNameValueLength > _oldCreditCardNameValueLength) {
+    if (newCreditCardNameValueLength > _oldCreditCardHolderNameValueLength) {
       if ((cardNameTextFieldCursorPostion - newlyAddedCharactersLength) <
-          _oldCreditCardNameValueLength) {
+          _oldCreditCardHolderNameValueLength) {
         for (int i =
                 (cardNameTextFieldCursorPostion - newlyAddedCharactersLength);
             i <
@@ -217,28 +255,33 @@ class _WrapperViewState extends State<WrapperView>
                     (cardNameTextFieldCursorPostion -
                         newlyAddedCharactersLength));
             i++) {
-          _creditCardName.insert(i, nameValue[i]);
+          _creditCardHolderName.insert(i, nameValue[i]);
         }
       } else {
-        for (int i = _oldCreditCardNameValueLength;
+        for (int i = _oldCreditCardHolderNameValueLength;
             i < newCreditCardNameValueLength;
             i++) {
-          _creditCardName.add(nameValue[i]);
+          _creditCardHolderName.add(nameValue[i]);
         }
+      }
+      if (_creditCardHolderName.length == 1) {
+        setState(() {
+          _allowEmptyCreditCardHolderNameAnimation = true;
+        });
       }
     } else {
       var newlyRemovedCharactersLength =
-          _oldCreditCardNameValueLength - newCreditCardNameValueLength;
+          _oldCreditCardHolderNameValueLength - newCreditCardNameValueLength;
 
       for (int i =
               ((newlyRemovedCharactersLength + cardNameTextFieldCursorPostion) -
                   1);
           i > (cardNameTextFieldCursorPostion - 1);
           i--) {
-        _creditCardName.removeAt(i);
+        _creditCardHolderName.removeAt(i);
       }
     }
-    _oldCreditCardNameValueLength = newCreditCardNameValueLength;
+    _oldCreditCardHolderNameValueLength = newCreditCardNameValueLength;
     setState(() {});
   }
 }

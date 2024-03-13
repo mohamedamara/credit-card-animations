@@ -9,16 +9,20 @@ class CreditCardForm extends StatelessWidget {
     super.key,
     required this.creditCardNumbersTextEditingController,
     required this.onCreditCardNumbersValueChanged,
-    required this.creditCardNameTextEditingController,
-    required this.onCreditCardNameValueChanged,
+    required this.creditCardNumbersTextFieldFocusNode,
+    required this.creditCardHolderNameTextEditingController,
+    required this.onCreditCardHolderNameValueChanged,
+    required this.creditCardHolderNameTextFieldFocusNode,
   });
 
   final TextEditingController creditCardNumbersTextEditingController;
   final void Function(String newCreditCardNumbersValue)?
       onCreditCardNumbersValueChanged;
-  final TextEditingController creditCardNameTextEditingController;
-  final void Function(String newCreditCardNameValue)?
-      onCreditCardNameValueChanged;
+  final FocusNode creditCardNumbersTextFieldFocusNode;
+  final TextEditingController creditCardHolderNameTextEditingController;
+  final void Function(String newCreditCardHolderNameValue)?
+      onCreditCardHolderNameValueChanged;
+  final FocusNode creditCardHolderNameTextFieldFocusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +59,7 @@ class CreditCardForm extends StatelessWidget {
           const SizedBox(height: 5),
           CustomTextField(
             controller: creditCardNumbersTextEditingController,
+            focusNode: creditCardNumbersTextFieldFocusNode,
             keyboardType: TextInputType.number,
             maxLength: 19,
             inputFormatters: [
@@ -67,7 +72,7 @@ class CreditCardForm extends StatelessWidget {
           const Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Card Name',
+              'Card Holder',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -77,9 +82,10 @@ class CreditCardForm extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           CustomTextField(
-            controller: creditCardNameTextEditingController,
+            controller: creditCardHolderNameTextEditingController,
+            focusNode: creditCardHolderNameTextFieldFocusNode,
             keyboardType: TextInputType.name,
-            onChanged: onCreditCardNameValueChanged,
+            onChanged: onCreditCardHolderNameValueChanged,
           ),
         ],
       ),
