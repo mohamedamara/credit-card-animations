@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'gesture_detector_with_mouse_hover.dart';
 
 class SubmitButton extends StatelessWidget {
-  const SubmitButton({super.key});
+  const SubmitButton({
+    super.key,
+    required this.opTap,
+  });
+
+  final VoidCallback opTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetectorWithMouseHover(
-      onTap: () {},
+      onTap: opTap,
       child: Container(
         height: 55,
         width: double.infinity,

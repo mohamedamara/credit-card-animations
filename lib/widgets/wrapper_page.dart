@@ -15,8 +15,10 @@ class _WrapperViewState extends State<WrapperView>
     with TickerProviderStateMixin {
   late TextEditingController _creditCardNumbersTextEditingController;
   late TextEditingController _creditCardHolderNameTextEditingController;
+  late TextEditingController _creditCardCvvTextEditingController;
   late FocusNode _creditCardNumbersTextFieldFocusNode;
   late FocusNode _creditCardHolderNameTextFieldFocusNode;
+  late FocusNode _creditCardCvvTextFieldFocusNode;
 
   late AnimationController _creditCardNumberEnterAnimationController;
   late AnimationController _creditCardNumberLeaveAnimationController;
@@ -32,6 +34,20 @@ class _WrapperViewState extends State<WrapperView>
 
   String _creditCardHolderName = '';
 
+  String _creditCardCvv = '';
+
+  final List<String> _months = List.generate(
+    12,
+    growable: false,
+    (index) => (index + 1).toString().padLeft(2, '0'),
+  );
+
+  final List<String> _years = List.generate(
+    12,
+    growable: false,
+    (index) => (index + DateTime.now().year).toString(),
+  );
+
   int _oldCreditCardNumbersValueLength = 0;
   String _oldCreditCardNumbersValue = '';
 
@@ -40,15 +56,21 @@ class _WrapperViewState extends State<WrapperView>
 
   bool _allowEmptyCreditCardHolderNameAnimation = false;
 
+  bool _monthDropdownHasFocus = false;
+  bool _yearDropdownHasFocus = false;
+
   @override
   void initState() {
     super.initState();
     _creditCardNumbersTextEditingController = TextEditingController();
     _creditCardHolderNameTextEditingController = TextEditingController();
+    _creditCardCvvTextEditingController = TextEditingController();
     _creditCardNumbersTextFieldFocusNode = FocusNode();
     _creditCardHolderNameTextFieldFocusNode = FocusNode();
+    _creditCardCvvTextFieldFocusNode = FocusNode();
     _creditCardNumbersTextFieldFocusNode.addListener(_onFocusChange);
     _creditCardHolderNameTextFieldFocusNode.addListener(_onFocusChange);
+    _creditCardCvvTextFieldFocusNode.addListener(_onFocusChange);
     _creditCardNumberEnterAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 250),
@@ -63,16 +85,23 @@ class _WrapperViewState extends State<WrapperView>
   void dispose() {
     _creditCardNumbersTextEditingController.dispose();
     _creditCardHolderNameTextEditingController.dispose();
+    _creditCardCvvTextEditingController.dispose();
     _creditCardNumbersTextFieldFocusNode.dispose();
     _creditCardHolderNameTextFieldFocusNode.dispose();
+    _creditCardCvvTextFieldFocusNode.dispose();
     _creditCardNumbersTextFieldFocusNode.removeListener(_onFocusChange);
     _creditCardHolderNameTextFieldFocusNode.removeListener(_onFocusChange);
+    _creditCardCvvTextFieldFocusNode.removeListener(_onFocusChange);
     _creditCardNumberEnterAnimationController.dispose();
     _creditCardNumberLeaveAnimationController.dispose();
     super.dispose();
   }
 
   void _onFocusChange() {
+    setState(() {
+      _monthDropdownHasFocus = false;
+      _yearDropdownHasFocus = false;
+    });
     if (_creditCardNumbersTextFieldFocusNode.hasFocus) {
       setState(() {
         _creditCardFocusCoverOffset = const Offset(13, 112);
@@ -87,6 +116,13 @@ class _WrapperViewState extends State<WrapperView>
       });
       return;
     }
+    if (_creditCardCvvTextFieldFocusNode.hasFocus) {
+      setState(() {
+        _creditCardFocusCoverOffset = Offset.zero;
+        _creditCardFocusCoverSize = const Size(430, 270);
+      });
+      return;
+    }
   }
 
   @override
@@ -96,6 +132,8 @@ class _WrapperViewState extends State<WrapperView>
         setState(() {
           _creditCardFocusCoverOffset = Offset.zero;
           _creditCardFocusCoverSize = const Size(430, 270);
+          _monthDropdownHasFocus = false;
+          _yearDropdownHasFocus = false;
         });
       },
       child: Scaffold(
@@ -133,6 +171,39 @@ class _WrapperViewState extends State<WrapperView>
                           },
                           creditCardHolderNameTextFieldFocusNode:
                               _creditCardHolderNameTextFieldFocusNode,
+                          creditCardCvvTextEditingController:
+                              _creditCardCvvTextEditingController,
+                          onCreditCardCvvValueChanged: (newCreditCardCvvValue) {
+                            setState(() {
+                              _creditCardCvv = newCreditCardCvvValue;
+                            });
+                          },
+                          creditCardCvvTextFieldFocusNode:
+                              _creditCardCvvTextFieldFocusNode,
+                          months: _months,
+                          years: _years,
+                          monthDropdownHasFocus: _monthDropdownHasFocus,
+                          yearDropdownHasFocus: _yearDropdownHasFocus,
+                          onMonthDropdownValueChanged: (newValue) {},
+                          onYearDropdownValueChanged: (newValue) {},
+                          onMonthDropdownTapped: () {
+                            setState(() {
+                              _monthDropdownHasFocus = true;
+                              _yearDropdownHasFocus = false;
+                            });
+                          },
+                          onYearDropdownTapped: () {
+                            setState(() {
+                              _yearDropdownHasFocus = true;
+                              _monthDropdownHasFocus = false;
+                            });
+                          },
+                          submitButtonAction: () {
+                            setState(() {
+                              _monthDropdownHasFocus = false;
+                              _yearDropdownHasFocus = false;
+                            });
+                          },
                         ),
                       ),
                       Align(
