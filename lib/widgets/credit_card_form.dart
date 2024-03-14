@@ -85,6 +85,7 @@ class CreditCardForm extends StatelessWidget {
             controller: creditCardHolderNameTextEditingController,
             focusNode: creditCardHolderNameTextFieldFocusNode,
             keyboardType: TextInputType.name,
+            maxLength: 20,
             onChanged: onCreditCardHolderNameValueChanged,
           ),
         ],

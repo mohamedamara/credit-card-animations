@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../models/credit_card_number_model.dart';
 
-class CreditCard extends StatefulWidget {
+class CreditCard extends StatelessWidget {
   const CreditCard({
     super.key,
     required this.creditCardNumberEnterAnimationController,
@@ -23,7 +23,7 @@ class CreditCard extends StatefulWidget {
   final AnimationController creditCardNumberEnterAnimationController;
   final AnimationController creditCardNumberLeaveAnimationController;
   final List<CreditCardNumberModel> creditCardNumbers;
-  final List<String> creditCardHolderName;
+  final String creditCardHolderName;
   final Offset creditCardFocusCoverOffset;
   final void Function(Offset offset) onCreditCardFocusCoverOffsetChanged;
   final Size creditCardFocusCoverSize;
@@ -31,41 +31,6 @@ class CreditCard extends StatefulWidget {
   final FocusNode creditCardNumbersTextFieldFocusNode;
   final FocusNode creditCardHolderNameTextFieldFocusNode;
   final bool allowEmptyCreditCardHolderNameAnimation;
-
-  @override
-  State<CreditCard> createState() => _CreditCardState();
-}
-
-class _CreditCardState extends State<CreditCard> {
-  late Animation<Offset> _numberEnterOffsetAnimation;
-  late Animation<Offset> _numberLeaveOffsetAnimation;
-  late Animation<double> _numberleaveOpacityAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _numberEnterOffsetAnimation = Tween<Offset>(
-      begin: const Offset(0.0, 0.3),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: widget.creditCardNumberEnterAnimationController,
-        curve: Curves.easeInOut,
-      ),
-    );
-    final numberLeaveCurvedAnimation = CurvedAnimation(
-      parent: widget.creditCardNumberLeaveAnimationController,
-      curve: Curves.easeInOut,
-    );
-    _numberLeaveOffsetAnimation = Tween<Offset>(
-      begin: const Offset(0.0, 0.0),
-      end: const Offset(0.0, -0.3),
-    ).animate(numberLeaveCurvedAnimation);
-    _numberleaveOpacityAnimation = Tween<double>(
-      begin: 1,
-      end: 0,
-    ).animate(numberLeaveCurvedAnimation);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,30 +83,27 @@ class _CreditCardState extends State<CreditCard> {
           AnimatedPositioned(
             duration: const Duration(milliseconds: 350),
             curve: Curves.easeInOut,
-            top: widget.creditCardFocusCoverOffset.dy,
-            left: widget.creditCardFocusCoverOffset.dx,
+            top: creditCardFocusCoverOffset.dy,
+            left: creditCardFocusCoverOffset.dx,
             child: SizedBox(
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 350),
                 curve: Curves.easeInOut,
-                height: widget.creditCardFocusCoverSize.height,
-                width: widget.creditCardFocusCoverSize.width,
+                height: creditCardFocusCoverSize.height,
+                width: creditCardFocusCoverSize.width,
                 decoration: BoxDecoration(
                   color: const Color(0xFF08142F).withOpacity(
-                    (widget.creditCardNumbersTextFieldFocusNode.hasFocus ||
-                            widget.creditCardHolderNameTextFieldFocusNode
-                                .hasFocus)
+                    (creditCardNumbersTextFieldFocusNode.hasFocus ||
+                            creditCardHolderNameTextFieldFocusNode.hasFocus)
                         ? 0.3
                         : 0,
                   ),
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(
-                    color:
-                        (widget.creditCardNumbersTextFieldFocusNode.hasFocus ||
-                                widget.creditCardHolderNameTextFieldFocusNode
-                                    .hasFocus)
-                            ? Colors.white.withOpacity(0.65)
-                            : Colors.transparent,
+                    color: (creditCardNumbersTextFieldFocusNode.hasFocus ||
+                            creditCardHolderNameTextFieldFocusNode.hasFocus)
+                        ? Colors.white.withOpacity(0.65)
+                        : Colors.transparent,
                     width: 2,
                   ),
                 ),
@@ -153,27 +115,45 @@ class _CreditCardState extends State<CreditCard> {
             left: 25,
             child: GestureDetectorWithMouseHover(
               onTap: () {
-                widget.creditCardNumbersTextFieldFocusNode.requestFocus();
-                widget.onCreditCardFocusCoverOffsetChanged(
+                creditCardNumbersTextFieldFocusNode.requestFocus();
+                onCreditCardFocusCoverOffsetChanged(
                   const Offset(13, 112),
                 );
-                widget.onCreditCardFocusCoverSizeChanged(
+                onCreditCardFocusCoverSizeChanged(
                   const Size(371, 53),
                 );
               },
               child: Row(
                 children: [
-                  for (int i = 0; i < widget.creditCardNumbers.length; i++) ...[
-                    if (widget.creditCardNumbers[i].isNewlyEnteredValue) ...[
+                  for (int i = 0; i < creditCardNumbers.length; i++) ...[
+                    if (creditCardNumbers[i].isNewlyEnteredValue) ...[
                       Stack(
                         alignment: Alignment.center,
                         children: [
                           FadeTransition(
-                            opacity: _numberleaveOpacityAnimation,
+                            opacity: Tween<double>(
+                              begin: 1,
+                              end: 0,
+                            ).animate(
+                              CurvedAnimation(
+                                parent:
+                                    creditCardNumberLeaveAnimationController,
+                                curve: Curves.easeInOut,
+                              ),
+                            ),
                             child: SlideTransition(
-                              position: _numberLeaveOffsetAnimation,
+                              position: Tween<Offset>(
+                                begin: const Offset(0.0, 0.0),
+                                end: const Offset(0.0, -0.3),
+                              ).animate(
+                                CurvedAnimation(
+                                  parent:
+                                      creditCardNumberLeaveAnimationController,
+                                  curve: Curves.easeInOut,
+                                ),
+                              ),
                               child: Text(
-                                widget.creditCardNumbers[i].leaveAnimatedValue,
+                                creditCardNumbers[i].leaveAnimatedValue,
                                 style: const TextStyle(
                                   fontSize: 30,
                                   color: Colors.white,
@@ -184,12 +164,20 @@ class _CreditCardState extends State<CreditCard> {
                             ),
                           ),
                           FadeTransition(
-                            opacity:
-                                widget.creditCardNumberEnterAnimationController,
+                            opacity: creditCardNumberEnterAnimationController,
                             child: SlideTransition(
-                              position: _numberEnterOffsetAnimation,
+                              position: Tween<Offset>(
+                                begin: const Offset(0.0, 0.3),
+                                end: Offset.zero,
+                              ).animate(
+                                CurvedAnimation(
+                                  parent:
+                                      creditCardNumberEnterAnimationController,
+                                  curve: Curves.easeInOut,
+                                ),
+                              ),
                               child: Text(
-                                widget.creditCardNumbers[i].value,
+                                creditCardNumbers[i].value,
                                 style: const TextStyle(
                                   fontSize: 30,
                                   color: Colors.white,
@@ -203,7 +191,7 @@ class _CreditCardState extends State<CreditCard> {
                       ),
                     ] else ...[
                       Text(
-                        widget.creditCardNumbers[i].value,
+                        creditCardNumbers[i].value,
                         style: const TextStyle(
                           fontSize: 30,
                           color: Colors.white,
@@ -225,11 +213,11 @@ class _CreditCardState extends State<CreditCard> {
             left: 25,
             child: GestureDetectorWithMouseHover(
               onTap: () {
-                widget.creditCardHolderNameTextFieldFocusNode.requestFocus();
-                widget.onCreditCardFocusCoverOffsetChanged(
+                creditCardHolderNameTextFieldFocusNode.requestFocus();
+                onCreditCardFocusCoverOffsetChanged(
                   const Offset(13, 186),
                 );
-                widget.onCreditCardFocusCoverSizeChanged(
+                onCreditCardFocusCoverSizeChanged(
                   const Size(315, 63),
                 );
               },
@@ -249,11 +237,9 @@ class _CreditCardState extends State<CreditCard> {
                     width: 300,
                     child: Stack(
                       children: [
-                        if (widget.creditCardHolderName.isEmpty) ...[
-                          if (widget
-                              .allowEmptyCreditCardHolderNameAnimation) ...[
+                        if (creditCardHolderName.isEmpty) ...[
+                          if (allowEmptyCreditCardHolderNameAnimation) ...[
                             TweenAnimationBuilder(
-                              key: const ValueKey(0),
                               tween: Tween<Offset>(
                                 begin: const Offset(0.0, 18),
                                 end: const Offset(0.0, 0),
@@ -262,6 +248,7 @@ class _CreditCardState extends State<CreditCard> {
                               duration: const Duration(milliseconds: 300),
                               builder: (context, offset, child) {
                                 return TweenAnimationBuilder(
+                                  key: const ValueKey(0),
                                   tween: Tween<double>(
                                     begin: 0,
                                     end: 1,
@@ -300,7 +287,7 @@ class _CreditCardState extends State<CreditCard> {
                             )
                           ],
                         ],
-                        if (widget.creditCardHolderName.isNotEmpty) ...[
+                        if (creditCardHolderName.isNotEmpty) ...[
                           TweenAnimationBuilder(
                             key: const ValueKey(1),
                             tween: Tween<Offset>(
@@ -338,20 +325,95 @@ class _CreditCardState extends State<CreditCard> {
                             },
                           ),
                         ],
-                        ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: widget.creditCardHolderName.length,
-                          itemBuilder: (context, index) {
-                            return Text(
-                              widget.creditCardHolderName[index].toUpperCase(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1,
-                              ),
-                            );
-                          },
+                        Row(
+                          children: [
+                            for (int i = 0;
+                                i < creditCardHolderName.length;
+                                i++) ...[
+                              if (i == 0) ...[
+                                TweenAnimationBuilder(
+                                  key: ValueKey(i),
+                                  tween: Tween<Offset>(
+                                    begin: const Offset(0.0, 18.0),
+                                    end: const Offset(0.0, 0.0),
+                                  ),
+                                  curve: Curves.easeInOut,
+                                  duration: const Duration(milliseconds: 300),
+                                  builder: (context, offset, child) {
+                                    return TweenAnimationBuilder(
+                                      key: ValueKey(i),
+                                      tween: Tween<double>(
+                                        begin: 0,
+                                        end: 1,
+                                      ),
+                                      curve: Curves.easeInOut,
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      builder: (context, opacity, child) {
+                                        return Opacity(
+                                          opacity: opacity,
+                                          child: Transform.translate(
+                                            offset: offset,
+                                            child: Text(
+                                              creditCardHolderName[i]
+                                                  .toUpperCase(),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                letterSpacing: 1,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ] else ...[
+                                TweenAnimationBuilder(
+                                  key: ValueKey(i),
+                                  tween: Tween<Offset>(
+                                    begin: const Offset(18.0, 0.0),
+                                    end: const Offset(0.0, 0.0),
+                                  ),
+                                  curve: Curves.easeInOut,
+                                  duration: const Duration(milliseconds: 300),
+                                  builder: (context, offset, child) {
+                                    return TweenAnimationBuilder(
+                                      key: ValueKey(i),
+                                      tween: Tween<double>(
+                                        begin: 0,
+                                        end: 1,
+                                      ),
+                                      curve: Curves.easeInOut,
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      builder: (context, opacity, child) {
+                                        return Opacity(
+                                          opacity: opacity,
+                                          child: Transform.translate(
+                                            offset: offset,
+                                            child: Text(
+                                              creditCardHolderName[i]
+                                                  .toUpperCase(),
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                letterSpacing: 1,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ],
+                          ],
                         ),
                       ],
                     ),

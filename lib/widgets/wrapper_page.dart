@@ -1,8 +1,8 @@
 import 'package:credit_card_animations/widgets/credit_card_form.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/credit_card.dart';
-import 'models/credit_card_number_model.dart';
+import 'credit_card.dart';
+import '../models/credit_card_number_model.dart';
 
 class WrapperView extends StatefulWidget {
   const WrapperView({super.key});
@@ -30,12 +30,10 @@ class _WrapperViewState extends State<WrapperView>
     ),
   );
 
-  final List<String> _creditCardHolderName = [];
+  String _creditCardHolderName = '';
 
   int _oldCreditCardNumbersValueLength = 0;
   String _oldCreditCardNumbersValue = '';
-
-  int _oldCreditCardHolderNameValueLength = 0;
 
   Offset _creditCardFocusCoverOffset = Offset.zero;
   Size _creditCardFocusCoverSize = const Size(430, 270);
@@ -124,7 +122,15 @@ class _WrapperViewState extends State<WrapperView>
                           creditCardHolderNameTextEditingController:
                               _creditCardHolderNameTextEditingController,
                           onCreditCardHolderNameValueChanged:
-                              _onCreditCardHolderNameValueChanged,
+                              (newCreditCardHolderNameValue) {
+                            setState(() {
+                              _creditCardHolderName =
+                                  newCreditCardHolderNameValue;
+                              if (_creditCardHolderName.length == 1) {
+                                _allowEmptyCreditCardHolderNameAnimation = true;
+                              }
+                            });
+                          },
                           creditCardHolderNameTextFieldFocusNode:
                               _creditCardHolderNameTextFieldFocusNode,
                         ),
@@ -233,55 +239,6 @@ class _WrapperViewState extends State<WrapperView>
     _creditCardNumberEnterAnimationController.forward();
     _oldCreditCardNumbersValue = numbersValue;
     _oldCreditCardNumbersValueLength = newCreditCardNumbersValueLength;
-    setState(() {});
-  }
-
-  void _onCreditCardHolderNameValueChanged(String newValue) {
-    var nameValue = newValue;
-    var newCreditCardNameValueLength = newValue.length;
-    var cardNameTextFieldCursorPostion =
-        _creditCardHolderNameTextEditingController.selection.base.offset;
-
-    var newlyAddedCharactersLength =
-        newCreditCardNameValueLength - _oldCreditCardHolderNameValueLength;
-
-    if (newCreditCardNameValueLength > _oldCreditCardHolderNameValueLength) {
-      if ((cardNameTextFieldCursorPostion - newlyAddedCharactersLength) <
-          _oldCreditCardHolderNameValueLength) {
-        for (int i =
-                (cardNameTextFieldCursorPostion - newlyAddedCharactersLength);
-            i <
-                (newlyAddedCharactersLength +
-                    (cardNameTextFieldCursorPostion -
-                        newlyAddedCharactersLength));
-            i++) {
-          _creditCardHolderName.insert(i, nameValue[i]);
-        }
-      } else {
-        for (int i = _oldCreditCardHolderNameValueLength;
-            i < newCreditCardNameValueLength;
-            i++) {
-          _creditCardHolderName.add(nameValue[i]);
-        }
-      }
-      if (_creditCardHolderName.length == 1) {
-        setState(() {
-          _allowEmptyCreditCardHolderNameAnimation = true;
-        });
-      }
-    } else {
-      var newlyRemovedCharactersLength =
-          _oldCreditCardHolderNameValueLength - newCreditCardNameValueLength;
-
-      for (int i =
-              ((newlyRemovedCharactersLength + cardNameTextFieldCursorPostion) -
-                  1);
-          i > (cardNameTextFieldCursorPostion - 1);
-          i--) {
-        _creditCardHolderName.removeAt(i);
-      }
-    }
-    _oldCreditCardHolderNameValueLength = newCreditCardNameValueLength;
     setState(() {});
   }
 }

@@ -1,4 +1,4 @@
-import 'package:credit_card_animations/wrapper_view.dart';
+import 'package:credit_card_animations/widgets/wrapper_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
