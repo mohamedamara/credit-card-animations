@@ -1,4 +1,5 @@
 import 'package:credit_card_animations/widgets/custom_text_field.dart';
+import 'package:credit_card_animations/widgets/submit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -88,6 +89,8 @@ class CreditCardForm extends StatelessWidget {
             maxLength: 20,
             onChanged: onCreditCardHolderNameValueChanged,
           ),
+          const SizedBox(height: 45),
+          const SubmitButton(),
         ],
       ),
     );

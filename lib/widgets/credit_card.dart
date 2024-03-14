@@ -54,7 +54,7 @@ class CreditCard extends StatelessWidget {
                   blurRadius: 60,
                   spreadRadius: 0,
                   color: Color.fromRGBO(14, 42, 90, 0.55),
-                )
+                ),
               ],
             ),
           ),
