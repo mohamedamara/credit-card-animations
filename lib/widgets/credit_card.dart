@@ -18,6 +18,13 @@ class CreditCard extends StatelessWidget {
     required this.creditCardNumbersTextFieldFocusNode,
     required this.creditCardHolderNameTextFieldFocusNode,
     required this.allowEmptyCreditCardHolderNameAnimation,
+    required this.monthDropdownHasFocus,
+    required this.yearDropdownHasFocus,
+    required this.creditCardExpirationMonth,
+    required this.creditCardExpirationYear,
+    required this.expiresTextTapAction,
+    required this.monthTextTapAction,
+    required this.yearTextTapAction,
   });
 
   final AnimationController creditCardNumberEnterAnimationController;
@@ -31,6 +38,13 @@ class CreditCard extends StatelessWidget {
   final FocusNode creditCardNumbersTextFieldFocusNode;
   final FocusNode creditCardHolderNameTextFieldFocusNode;
   final bool allowEmptyCreditCardHolderNameAnimation;
+  final bool monthDropdownHasFocus;
+  final bool yearDropdownHasFocus;
+  final String? creditCardExpirationMonth;
+  final String? creditCardExpirationYear;
+  final VoidCallback expiresTextTapAction;
+  final VoidCallback monthTextTapAction;
+  final VoidCallback yearTextTapAction;
 
   @override
   Widget build(BuildContext context) {
@@ -94,14 +108,18 @@ class CreditCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: const Color(0xFF08142F).withOpacity(
                     (creditCardNumbersTextFieldFocusNode.hasFocus ||
-                            creditCardHolderNameTextFieldFocusNode.hasFocus)
+                            creditCardHolderNameTextFieldFocusNode.hasFocus ||
+                            monthDropdownHasFocus ||
+                            yearDropdownHasFocus)
                         ? 0.3
                         : 0,
                   ),
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(
                     color: (creditCardNumbersTextFieldFocusNode.hasFocus ||
-                            creditCardHolderNameTextFieldFocusNode.hasFocus)
+                            creditCardHolderNameTextFieldFocusNode.hasFocus ||
+                            monthDropdownHasFocus ||
+                            yearDropdownHasFocus)
                         ? Colors.white.withOpacity(0.65)
                         : Colors.transparent,
                     width: 2,
@@ -116,12 +134,6 @@ class CreditCard extends StatelessWidget {
             child: GestureDetectorWithMouseHover(
               onTap: () {
                 creditCardNumbersTextFieldFocusNode.requestFocus();
-                onCreditCardFocusCoverOffsetChanged(
-                  const Offset(13, 112),
-                );
-                onCreditCardFocusCoverSizeChanged(
-                  const Size(371, 53),
-                );
               },
               child: Row(
                 children: [
@@ -214,12 +226,6 @@ class CreditCard extends StatelessWidget {
             child: GestureDetectorWithMouseHover(
               onTap: () {
                 creditCardHolderNameTextFieldFocusNode.requestFocus();
-                onCreditCardFocusCoverOffsetChanged(
-                  const Offset(13, 186),
-                );
-                onCreditCardFocusCoverSizeChanged(
-                  const Size(315, 63),
-                );
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -284,7 +290,7 @@ class CreditCard extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: 1,
                               ),
-                            )
+                            ),
                           ],
                         ],
                         if (creditCardHolderName.isNotEmpty) ...[
@@ -420,6 +426,140 @@ class CreditCard extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+          ),
+          Positioned(
+            top: 196,
+            right: 25,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetectorWithMouseHover(
+                  onTap: expiresTextTapAction,
+                  child: Text(
+                    'Expires',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white.withOpacity(0.7),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetectorWithMouseHover(
+                      onTap: monthTextTapAction,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 250),
+                        reverseDuration: const Duration(milliseconds: 200),
+                        switchInCurve: Curves.easeInOut,
+                        switchOutCurve: Curves.easeInOut,
+                        transitionBuilder: (
+                          Widget child,
+                          Animation<double> animation,
+                        ) {
+                          if (child.key ==
+                              ValueKey(creditCardExpirationMonth ?? 'MM')) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0.0, 0.8),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: child,
+                              ),
+                            );
+                          } else {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0.0, -0.5),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: child,
+                              ),
+                            );
+                          }
+                        },
+                        child: Text(
+                          creditCardExpirationMonth ?? 'MM',
+                          key: ValueKey<String>(
+                              creditCardExpirationMonth ?? 'MM'),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '/'.toUpperCase(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                    GestureDetectorWithMouseHover(
+                      onTap: yearTextTapAction,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 250),
+                        reverseDuration: const Duration(milliseconds: 200),
+                        switchInCurve: Curves.easeInOut,
+                        switchOutCurve: Curves.easeInOut,
+                        transitionBuilder: (
+                          Widget child,
+                          Animation<double> animation,
+                        ) {
+                          if (child.key ==
+                              ValueKey(creditCardExpirationYear ?? 'YY')) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0.0, 0.8),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: child,
+                              ),
+                            );
+                          } else {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0.0, -0.5),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: child,
+                              ),
+                            );
+                          }
+                        },
+                        child: Text(
+                          creditCardExpirationYear?.substring(2) ?? 'YY',
+                          key: ValueKey<String>(
+                              creditCardExpirationYear ?? 'YY'),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],

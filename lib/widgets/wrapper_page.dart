@@ -48,6 +48,9 @@ class _WrapperViewState extends State<WrapperView>
     (index) => (index + DateTime.now().year).toString(),
   );
 
+  String? _creditCardExpirationMonth;
+  String? _creditCardExpirationYear;
+
   int _oldCreditCardNumbersValueLength = 0;
   String _oldCreditCardNumbersValue = '';
 
@@ -184,22 +187,38 @@ class _WrapperViewState extends State<WrapperView>
                           years: _years,
                           monthDropdownHasFocus: _monthDropdownHasFocus,
                           yearDropdownHasFocus: _yearDropdownHasFocus,
-                          onMonthDropdownValueChanged: (newValue) {},
-                          onYearDropdownValueChanged: (newValue) {},
+                          onMonthDropdownValueChanged: (newValue) {
+                            setState(() {
+                              _creditCardExpirationMonth = newValue;
+                            });
+                          },
+                          onYearDropdownValueChanged: (newValue) {
+                            setState(() {
+                              _creditCardExpirationYear = newValue;
+                            });
+                          },
                           onMonthDropdownTapped: () {
                             setState(() {
+                              _creditCardFocusCoverOffset =
+                                  const Offset(335, 190);
+                              _creditCardFocusCoverSize = const Size(81, 58);
                               _monthDropdownHasFocus = true;
                               _yearDropdownHasFocus = false;
                             });
                           },
                           onYearDropdownTapped: () {
                             setState(() {
+                              _creditCardFocusCoverOffset =
+                                  const Offset(335, 190);
+                              _creditCardFocusCoverSize = const Size(81, 58);
                               _yearDropdownHasFocus = true;
                               _monthDropdownHasFocus = false;
                             });
                           },
                           submitButtonAction: () {
                             setState(() {
+                              _creditCardFocusCoverOffset = Offset.zero;
+                              _creditCardFocusCoverSize = const Size(430, 270);
                               _monthDropdownHasFocus = false;
                               _yearDropdownHasFocus = false;
                             });
@@ -234,6 +253,37 @@ class _WrapperViewState extends State<WrapperView>
                               _creditCardHolderNameTextFieldFocusNode,
                           allowEmptyCreditCardHolderNameAnimation:
                               _allowEmptyCreditCardHolderNameAnimation,
+                          creditCardExpirationMonth: _creditCardExpirationMonth,
+                          creditCardExpirationYear: _creditCardExpirationYear,
+                          monthDropdownHasFocus: _monthDropdownHasFocus,
+                          yearDropdownHasFocus: _yearDropdownHasFocus,
+                          expiresTextTapAction: () {
+                            setState(() {
+                              _creditCardFocusCoverOffset =
+                                  const Offset(335, 190);
+                              _creditCardFocusCoverSize = const Size(81, 58);
+                              _monthDropdownHasFocus = true;
+                              _yearDropdownHasFocus = false;
+                            });
+                          },
+                          monthTextTapAction: () {
+                            setState(() {
+                              _creditCardFocusCoverOffset =
+                                  const Offset(335, 190);
+                              _creditCardFocusCoverSize = const Size(81, 58);
+                              _monthDropdownHasFocus = true;
+                              _yearDropdownHasFocus = false;
+                            });
+                          },
+                          yearTextTapAction: () {
+                            setState(() {
+                              _creditCardFocusCoverOffset =
+                                  const Offset(335, 190);
+                              _creditCardFocusCoverSize = const Size(81, 58);
+                              _yearDropdownHasFocus = true;
+                              _monthDropdownHasFocus = false;
+                            });
+                          },
                         ),
                       ),
                     ],
