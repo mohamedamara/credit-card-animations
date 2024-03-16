@@ -1,23 +1,23 @@
-import 'package:credit_card_animations/widgets/custom_dropdown_button.dart';
-import 'package:credit_card_animations/widgets/custom_text_field.dart';
-import 'package:credit_card_animations/widgets/submit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../utils/blank_space_after_every_4_characters_input_formatter.dart';
+import 'custom_dropdown_button.dart';
+import 'custom_text_field.dart';
+import 'submit_button.dart';
 
-class CreditCardForm extends StatelessWidget {
-  const CreditCardForm({
+class PaymentCardForm extends StatelessWidget {
+  const PaymentCardForm({
     super.key,
-    required this.creditCardNumbersTextEditingController,
-    required this.onCreditCardNumbersValueChanged,
-    required this.creditCardNumbersTextFieldFocusNode,
-    required this.creditCardHolderNameTextEditingController,
-    required this.onCreditCardHolderNameValueChanged,
-    required this.creditCardHolderNameTextFieldFocusNode,
-    required this.creditCardCvvTextEditingController,
-    required this.onCreditCardCvvValueChanged,
-    required this.creditCardCvvTextFieldFocusNode,
+    required this.paymentCardNumbersTextEditingController,
+    required this.onPaymentCardNumbersValueChanged,
+    required this.paymentCardNumbersTextFieldFocusNode,
+    required this.paymentCardHolderNameTextEditingController,
+    required this.onPaymentCardHolderNameValueChanged,
+    required this.paymentCardHolderNameTextFieldFocusNode,
+    required this.paymentCardCvvTextEditingController,
+    required this.onPaymentCardCvvValueChanged,
+    required this.paymentCardCvvTextFieldFocusNode,
     required this.months,
     required this.years,
     required this.monthDropdownHasFocus,
@@ -29,18 +29,18 @@ class CreditCardForm extends StatelessWidget {
     required this.submitButtonAction,
   });
 
-  final TextEditingController creditCardNumbersTextEditingController;
-  final void Function(String newCreditCardNumbersValue)?
-      onCreditCardNumbersValueChanged;
-  final FocusNode creditCardNumbersTextFieldFocusNode;
-  final TextEditingController creditCardHolderNameTextEditingController;
-  final void Function(String newCreditCardHolderNameValue)?
-      onCreditCardHolderNameValueChanged;
-  final FocusNode creditCardHolderNameTextFieldFocusNode;
-  final TextEditingController creditCardCvvTextEditingController;
-  final void Function(String newCreditCardCvvValue)?
-      onCreditCardCvvValueChanged;
-  final FocusNode creditCardCvvTextFieldFocusNode;
+  final TextEditingController paymentCardNumbersTextEditingController;
+  final void Function(String newPaymentCardNumbersValue)?
+      onPaymentCardNumbersValueChanged;
+  final FocusNode paymentCardNumbersTextFieldFocusNode;
+  final TextEditingController paymentCardHolderNameTextEditingController;
+  final void Function(String newPaymentCardHolderNameValue)?
+      onPaymentCardHolderNameValueChanged;
+  final FocusNode paymentCardHolderNameTextFieldFocusNode;
+  final TextEditingController paymentCardCvvTextEditingController;
+  final void Function(String newPaymentCardCvvValue)?
+      onPaymentCardCvvValueChanged;
+  final FocusNode paymentCardCvvTextFieldFocusNode;
   final List<String> months;
   final List<String> years;
   final bool monthDropdownHasFocus;
@@ -85,15 +85,15 @@ class CreditCardForm extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           CustomTextField(
-            controller: creditCardNumbersTextEditingController,
-            focusNode: creditCardNumbersTextFieldFocusNode,
+            controller: paymentCardNumbersTextEditingController,
+            focusNode: paymentCardNumbersTextFieldFocusNode,
             keyboardType: TextInputType.number,
             maxLength: 19,
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
               BlankSpaceAfterEvery4charactersInputFormatter(),
             ],
-            onChanged: onCreditCardNumbersValueChanged,
+            onChanged: onPaymentCardNumbersValueChanged,
           ),
           const SizedBox(height: 16),
           const Align(
@@ -109,11 +109,11 @@ class CreditCardForm extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           CustomTextField(
-            controller: creditCardHolderNameTextEditingController,
-            focusNode: creditCardHolderNameTextFieldFocusNode,
+            controller: paymentCardHolderNameTextEditingController,
+            focusNode: paymentCardHolderNameTextFieldFocusNode,
             keyboardType: TextInputType.name,
             maxLength: 20,
-            onChanged: onCreditCardHolderNameValueChanged,
+            onChanged: onPaymentCardHolderNameValueChanged,
           ),
           const SizedBox(height: 16),
           Row(
@@ -180,14 +180,14 @@ class CreditCardForm extends StatelessWidget {
                       top: 14,
                       bottom: 17,
                     ),
-                    controller: creditCardCvvTextEditingController,
-                    focusNode: creditCardCvvTextFieldFocusNode,
+                    controller: paymentCardCvvTextEditingController,
+                    focusNode: paymentCardCvvTextFieldFocusNode,
                     keyboardType: TextInputType.number,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
                     ],
                     maxLength: 4,
-                    onChanged: onCreditCardCvvValueChanged,
+                    onChanged: onPaymentCardCvvValueChanged,
                   ),
                 ],
               ),

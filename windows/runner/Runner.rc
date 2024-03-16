@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.mohamedamara" "\0"
-            VALUE "FileDescription", "credit_card_animations" "\0"
+            VALUE "FileDescription", "payment_card_animations" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "credit_card_animations" "\0"
+            VALUE "InternalName", "payment_card_animations" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.mohamedamara. All rights reserved." "\0"
-            VALUE "OriginalFilename", "credit_card_animations.exe" "\0"
-            VALUE "ProductName", "credit_card_animations" "\0"
+            VALUE "OriginalFilename", "payment_card_animations.exe" "\0"
+            VALUE "ProductName", "payment_card_animations" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

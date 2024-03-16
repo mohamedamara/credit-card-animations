@@ -1,70 +1,70 @@
 import 'dart:math';
 
-import 'package:credit_card_animations/constants/assets_constants.dart';
-import 'package:credit_card_animations/widgets/gesture_detector_with_mouse_hover.dart';
+import '../constants/assets_constants.dart';
+import '/widgets/gesture_detector_with_mouse_hover.dart';
 import 'package:flutter/material.dart';
 
-import '../models/credit_card_number_model.dart';
+import '../models/payment_card_number_model.dart';
 
-class CreditCard extends StatelessWidget {
-  const CreditCard({
+class PaymentCard extends StatelessWidget {
+  const PaymentCard({
     super.key,
-    required this.creditCardNumberEnterAnimationController,
-    required this.creditCardNumberLeaveAnimationController,
-    required this.creditCardFlipAnimationController,
-    required this.creditCardNumbers,
-    required this.creditCardHolderName,
-    required this.creditCardFocusCoverOffset,
-    required this.onCreditCardFocusCoverOffsetChanged,
-    required this.creditCardFocusCoverSize,
-    required this.onCreditCardFocusCoverSizeChanged,
-    required this.creditCardNumbersTextFieldFocusNode,
-    required this.creditCardHolderNameTextFieldFocusNode,
-    required this.allowEmptyCreditCardHolderNameAnimation,
+    required this.paymentCardNumberEnterAnimationController,
+    required this.paymentCardNumberLeaveAnimationController,
+    required this.paymentCardFlipAnimationController,
+    required this.paymentCardNumbers,
+    required this.paymentCardHolderName,
+    required this.paymentCardFocusCoverOffset,
+    required this.onPaymentCardFocusCoverOffsetChanged,
+    required this.paymentCardFocusCoverSize,
+    required this.onPaymentCardFocusCoverSizeChanged,
+    required this.paymentCardNumbersTextFieldFocusNode,
+    required this.paymentCardHolderNameTextFieldFocusNode,
+    required this.allowEmptyPaymentCardHolderNameAnimation,
     required this.monthDropdownHasFocus,
     required this.yearDropdownHasFocus,
-    required this.creditCardExpirationMonth,
-    required this.creditCardExpirationYear,
+    required this.paymentCardExpirationMonth,
+    required this.paymentCardExpirationYear,
     required this.expiresTextTapAction,
     required this.monthTextTapAction,
     required this.yearTextTapAction,
-    required this.creditCardCvv,
+    required this.paymentCardCvv,
   });
 
-  final AnimationController creditCardNumberEnterAnimationController;
-  final AnimationController creditCardNumberLeaveAnimationController;
-  final AnimationController creditCardFlipAnimationController;
-  final List<CreditCardNumberModel> creditCardNumbers;
-  final String creditCardHolderName;
-  final Offset creditCardFocusCoverOffset;
-  final void Function(Offset offset) onCreditCardFocusCoverOffsetChanged;
-  final Size creditCardFocusCoverSize;
-  final void Function(Size size) onCreditCardFocusCoverSizeChanged;
-  final FocusNode creditCardNumbersTextFieldFocusNode;
-  final FocusNode creditCardHolderNameTextFieldFocusNode;
-  final bool allowEmptyCreditCardHolderNameAnimation;
+  final AnimationController paymentCardNumberEnterAnimationController;
+  final AnimationController paymentCardNumberLeaveAnimationController;
+  final AnimationController paymentCardFlipAnimationController;
+  final List<PaymentCardNumberModel> paymentCardNumbers;
+  final String paymentCardHolderName;
+  final Offset paymentCardFocusCoverOffset;
+  final void Function(Offset offset) onPaymentCardFocusCoverOffsetChanged;
+  final Size paymentCardFocusCoverSize;
+  final void Function(Size size) onPaymentCardFocusCoverSizeChanged;
+  final FocusNode paymentCardNumbersTextFieldFocusNode;
+  final FocusNode paymentCardHolderNameTextFieldFocusNode;
+  final bool allowEmptyPaymentCardHolderNameAnimation;
   final bool monthDropdownHasFocus;
   final bool yearDropdownHasFocus;
-  final String? creditCardExpirationMonth;
-  final String? creditCardExpirationYear;
+  final String? paymentCardExpirationMonth;
+  final String? paymentCardExpirationYear;
   final VoidCallback expiresTextTapAction;
   final VoidCallback monthTextTapAction;
   final VoidCallback yearTextTapAction;
-  final String creditCardCvv;
+  final String paymentCardCvv;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: creditCardFlipAnimationController,
+      animation: paymentCardFlipAnimationController,
       builder: (context, child) {
         return Transform(
           alignment: Alignment.center,
           transform: Matrix4.identity()
             ..setEntry(3, 2, 0.001)
             ..rotateY(
-              (creditCardFlipAnimationController.value < 0.5)
-                  ? (-pi * creditCardFlipAnimationController.value)
-                  : (-pi * (1 + creditCardFlipAnimationController.value)),
+              (paymentCardFlipAnimationController.value < 0.5)
+                  ? (-pi * paymentCardFlipAnimationController.value)
+                  : (-pi * (1 + paymentCardFlipAnimationController.value)),
             ),
           child: SizedBox(
             height: 270,
@@ -75,10 +75,6 @@ class CreditCard extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    // image: const DecorationImage(
-                    //   image: AssetImage(AssetsConstants.creditCardImage),
-                    //   fit: BoxFit.cover,
-                    // ),
                     boxShadow: const [
                       BoxShadow(
                         offset: Offset(0, 20),
@@ -94,12 +90,12 @@ class CreditCard extends StatelessWidget {
                       alignment: Alignment.center,
                       transform: Matrix4.identity()
                         ..rotateY(
-                          creditCardFlipAnimationController.value < 0.5
+                          paymentCardFlipAnimationController.value < 0.5
                               ? 0
                               : -pi,
                         ),
                       child: Image.asset(
-                        AssetsConstants.creditCardImage,
+                        AssetsConstants.paymentCardCoverImage,
                         fit: BoxFit.cover,
                         height: 270,
                         width: 430,
@@ -113,7 +109,7 @@ class CreditCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
-                if (creditCardFlipAnimationController.value < 0.5) ...[
+                if (paymentCardFlipAnimationController.value < 0.5) ...[
                   Positioned(
                     top: 25,
                     left: 25,
@@ -133,18 +129,18 @@ class CreditCard extends StatelessWidget {
                   AnimatedPositioned(
                     duration: const Duration(milliseconds: 350),
                     curve: Curves.easeInOut,
-                    top: creditCardFocusCoverOffset.dy,
-                    left: creditCardFocusCoverOffset.dx,
+                    top: paymentCardFocusCoverOffset.dy,
+                    left: paymentCardFocusCoverOffset.dx,
                     child: SizedBox(
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 350),
                         curve: Curves.easeInOut,
-                        height: creditCardFocusCoverSize.height,
-                        width: creditCardFocusCoverSize.width,
+                        height: paymentCardFocusCoverSize.height,
+                        width: paymentCardFocusCoverSize.width,
                         decoration: BoxDecoration(
                           color: const Color(0xFF08142F).withOpacity(
-                            (creditCardNumbersTextFieldFocusNode.hasFocus ||
-                                    creditCardHolderNameTextFieldFocusNode
+                            (paymentCardNumbersTextFieldFocusNode.hasFocus ||
+                                    paymentCardHolderNameTextFieldFocusNode
                                         .hasFocus ||
                                     monthDropdownHasFocus ||
                                     yearDropdownHasFocus)
@@ -153,14 +149,14 @@ class CreditCard extends StatelessWidget {
                           ),
                           borderRadius: BorderRadius.circular(5),
                           border: Border.all(
-                            color:
-                                (creditCardNumbersTextFieldFocusNode.hasFocus ||
-                                        creditCardHolderNameTextFieldFocusNode
-                                            .hasFocus ||
-                                        monthDropdownHasFocus ||
-                                        yearDropdownHasFocus)
-                                    ? Colors.white.withOpacity(0.65)
-                                    : Colors.transparent,
+                            color: (paymentCardNumbersTextFieldFocusNode
+                                        .hasFocus ||
+                                    paymentCardHolderNameTextFieldFocusNode
+                                        .hasFocus ||
+                                    monthDropdownHasFocus ||
+                                    yearDropdownHasFocus)
+                                ? Colors.white.withOpacity(0.65)
+                                : Colors.transparent,
                             width: 2,
                           ),
                         ),
@@ -172,14 +168,14 @@ class CreditCard extends StatelessWidget {
                     left: 25,
                     child: GestureDetectorWithMouseHover(
                       onTap: () {
-                        creditCardNumbersTextFieldFocusNode.requestFocus();
+                        paymentCardNumbersTextFieldFocusNode.requestFocus();
                       },
                       child: Row(
                         children: [
                           for (int i = 0;
-                              i < creditCardNumbers.length;
+                              i < paymentCardNumbers.length;
                               i++) ...[
-                            if (creditCardNumbers[i].isNewlyEnteredValue) ...[
+                            if (paymentCardNumbers[i].isNewlyEnteredValue) ...[
                               Stack(
                                 alignment: Alignment.center,
                                 children: [
@@ -190,7 +186,7 @@ class CreditCard extends StatelessWidget {
                                     ).animate(
                                       CurvedAnimation(
                                         parent:
-                                            creditCardNumberLeaveAnimationController,
+                                            paymentCardNumberLeaveAnimationController,
                                         curve: Curves.easeInOut,
                                       ),
                                     ),
@@ -201,12 +197,13 @@ class CreditCard extends StatelessWidget {
                                       ).animate(
                                         CurvedAnimation(
                                           parent:
-                                              creditCardNumberLeaveAnimationController,
+                                              paymentCardNumberLeaveAnimationController,
                                           curve: Curves.easeInOut,
                                         ),
                                       ),
                                       child: Text(
-                                        creditCardNumbers[i].leaveAnimatedValue,
+                                        paymentCardNumbers[i]
+                                            .leaveAnimatedValue,
                                         style: const TextStyle(
                                           fontSize: 30,
                                           color: Colors.white,
@@ -218,7 +215,7 @@ class CreditCard extends StatelessWidget {
                                   ),
                                   FadeTransition(
                                     opacity:
-                                        creditCardNumberEnterAnimationController,
+                                        paymentCardNumberEnterAnimationController,
                                     child: SlideTransition(
                                       position: Tween<Offset>(
                                         begin: const Offset(0.0, 0.3),
@@ -226,12 +223,12 @@ class CreditCard extends StatelessWidget {
                                       ).animate(
                                         CurvedAnimation(
                                           parent:
-                                              creditCardNumberEnterAnimationController,
+                                              paymentCardNumberEnterAnimationController,
                                           curve: Curves.easeInOut,
                                         ),
                                       ),
                                       child: Text(
-                                        creditCardNumbers[i].value,
+                                        paymentCardNumbers[i].value,
                                         style: const TextStyle(
                                           fontSize: 30,
                                           color: Colors.white,
@@ -245,7 +242,7 @@ class CreditCard extends StatelessWidget {
                               ),
                             ] else ...[
                               Text(
-                                creditCardNumbers[i].value,
+                                paymentCardNumbers[i].value,
                                 style: const TextStyle(
                                   fontSize: 30,
                                   color: Colors.white,
@@ -267,7 +264,7 @@ class CreditCard extends StatelessWidget {
                     left: 25,
                     child: GestureDetectorWithMouseHover(
                       onTap: () {
-                        creditCardHolderNameTextFieldFocusNode.requestFocus();
+                        paymentCardHolderNameTextFieldFocusNode.requestFocus();
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -285,8 +282,8 @@ class CreditCard extends StatelessWidget {
                             width: 300,
                             child: Stack(
                               children: [
-                                if (creditCardHolderName.isEmpty) ...[
-                                  if (allowEmptyCreditCardHolderNameAnimation) ...[
+                                if (paymentCardHolderName.isEmpty) ...[
+                                  if (allowEmptyPaymentCardHolderNameAnimation) ...[
                                     TweenAnimationBuilder(
                                       tween: Tween<Offset>(
                                         begin: const Offset(0.0, 18),
@@ -337,7 +334,7 @@ class CreditCard extends StatelessWidget {
                                     ),
                                   ],
                                 ],
-                                if (creditCardHolderName.isNotEmpty) ...[
+                                if (paymentCardHolderName.isNotEmpty) ...[
                                   TweenAnimationBuilder(
                                     key: const ValueKey(1),
                                     tween: Tween<Offset>(
@@ -379,7 +376,7 @@ class CreditCard extends StatelessWidget {
                                 Row(
                                   children: [
                                     for (int i = 0;
-                                        i < creditCardHolderName.length;
+                                        i < paymentCardHolderName.length;
                                         i++) ...[
                                       if (i == 0) ...[
                                         TweenAnimationBuilder(
@@ -408,7 +405,7 @@ class CreditCard extends StatelessWidget {
                                                   child: Transform.translate(
                                                     offset: offset,
                                                     child: Text(
-                                                      creditCardHolderName[i]
+                                                      paymentCardHolderName[i]
                                                           .toUpperCase(),
                                                       style: const TextStyle(
                                                         color: Colors.white,
@@ -451,7 +448,7 @@ class CreditCard extends StatelessWidget {
                                                   child: Transform.translate(
                                                     offset: offset,
                                                     child: Text(
-                                                      creditCardHolderName[i]
+                                                      paymentCardHolderName[i]
                                                           .toUpperCase(),
                                                       overflow:
                                                           TextOverflow.ellipsis,
@@ -516,7 +513,7 @@ class CreditCard extends StatelessWidget {
                                 ) {
                                   if (child.key ==
                                       ValueKey(
-                                          creditCardExpirationMonth ?? 'MM')) {
+                                          paymentCardExpirationMonth ?? 'MM')) {
                                     return FadeTransition(
                                       opacity: animation,
                                       child: SlideTransition(
@@ -541,9 +538,9 @@ class CreditCard extends StatelessWidget {
                                   }
                                 },
                                 child: Text(
-                                  creditCardExpirationMonth ?? 'MM',
+                                  paymentCardExpirationMonth ?? 'MM',
                                   key: ValueKey<String>(
-                                      creditCardExpirationMonth ?? 'MM'),
+                                      paymentCardExpirationMonth ?? 'MM'),
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
@@ -576,7 +573,7 @@ class CreditCard extends StatelessWidget {
                                 ) {
                                   if (child.key ==
                                       ValueKey(
-                                          creditCardExpirationYear ?? 'YY')) {
+                                          paymentCardExpirationYear ?? 'YY')) {
                                     return FadeTransition(
                                       opacity: animation,
                                       child: SlideTransition(
@@ -601,10 +598,10 @@ class CreditCard extends StatelessWidget {
                                   }
                                 },
                                 child: Text(
-                                  creditCardExpirationYear?.substring(2) ??
+                                  paymentCardExpirationYear?.substring(2) ??
                                       'YY',
                                   key: ValueKey<String>(
-                                      creditCardExpirationYear ?? 'YY'),
+                                      paymentCardExpirationYear ?? 'YY'),
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
@@ -663,7 +660,7 @@ class CreditCard extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   for (int i = 0;
-                                      i < creditCardCvv.length;
+                                      i < paymentCardCvv.length;
                                       i++) ...[
                                     const Text(
                                       '*',

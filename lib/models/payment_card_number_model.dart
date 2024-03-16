@@ -1,5 +1,5 @@
-class CreditCardNumberModel {
-  CreditCardNumberModel({
+class PaymentCardNumberModel {
+  PaymentCardNumberModel({
     required this.value,
     required this.isNewlyEnteredValue,
     this.leaveAnimatedValue = '#',

@@ -1,6 +1,6 @@
 {
-    "name": "credit_card_animations",
-    "short_name": "credit_card_animations",
+    "name": "payment_card_animations",
+    "short_name": "payment_card_animations",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

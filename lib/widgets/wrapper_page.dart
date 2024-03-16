@@ -1,8 +1,8 @@
-import 'package:credit_card_animations/widgets/credit_card_form.dart';
 import 'package:flutter/material.dart';
 
-import 'credit_card.dart';
-import '../models/credit_card_number_model.dart';
+import 'payment_card.dart';
+import '../models/payment_card_number_model.dart';
+import 'payment_card_form.dart';
 
 class WrapperView extends StatefulWidget {
   const WrapperView({super.key});
@@ -13,29 +13,29 @@ class WrapperView extends StatefulWidget {
 
 class _WrapperViewState extends State<WrapperView>
     with TickerProviderStateMixin {
-  late TextEditingController _creditCardNumbersTextEditingController;
-  late TextEditingController _creditCardHolderNameTextEditingController;
-  late TextEditingController _creditCardCvvTextEditingController;
-  late FocusNode _creditCardNumbersTextFieldFocusNode;
-  late FocusNode _creditCardHolderNameTextFieldFocusNode;
-  late FocusNode _creditCardCvvTextFieldFocusNode;
+  late TextEditingController _paymentCardNumbersTextEditingController;
+  late TextEditingController _paymentCardHolderNameTextEditingController;
+  late TextEditingController _paymentCardCvvTextEditingController;
+  late FocusNode _paymentCardNumbersTextFieldFocusNode;
+  late FocusNode _paymentCardHolderNameTextFieldFocusNode;
+  late FocusNode _paymentCardCvvTextFieldFocusNode;
 
-  late AnimationController _creditCardNumberEnterAnimationController;
-  late AnimationController _creditCardNumberLeaveAnimationController;
-  late AnimationController _creditCardFlipAnimationController;
+  late AnimationController _paymentCardNumberEnterAnimationController;
+  late AnimationController _paymentCardNumberLeaveAnimationController;
+  late AnimationController _paymentCardFlipAnimationController;
 
-  final List<CreditCardNumberModel> _creditCardNumbers = List.generate(
+  final List<PaymentCardNumberModel> _paymentCardNumbers = List.generate(
     16,
     growable: false,
-    (index) => CreditCardNumberModel(
+    (index) => PaymentCardNumberModel(
       value: '#',
       isNewlyEnteredValue: false,
     ),
   );
 
-  String _creditCardHolderName = '';
+  String _paymentCardHolderName = '';
 
-  String _creditCardCvv = '';
+  String _paymentCardCvv = '';
 
   final List<String> _months = List.generate(
     12,
@@ -49,16 +49,16 @@ class _WrapperViewState extends State<WrapperView>
     (index) => (index + DateTime.now().year).toString(),
   );
 
-  String? _creditCardExpirationMonth;
-  String? _creditCardExpirationYear;
+  String? _paymentCardExpirationMonth;
+  String? _paymentCardExpirationYear;
 
-  int _oldCreditCardNumbersValueLength = 0;
-  String _oldCreditCardNumbersValue = '';
+  int _oldPaymentCardNumbersValueLength = 0;
+  String _oldPaymentCardNumbersValue = '';
 
-  Offset _creditCardFocusCoverOffset = Offset.zero;
-  Size _creditCardFocusCoverSize = const Size(430, 270);
+  Offset _paymentCardFocusCoverOffset = Offset.zero;
+  Size _paymentCardFocusCoverSize = const Size(430, 270);
 
-  bool _allowEmptyCreditCardHolderNameAnimation = false;
+  bool _allowEmptyPaymentCardHolderNameAnimation = false;
 
   bool _monthDropdownHasFocus = false;
   bool _yearDropdownHasFocus = false;
@@ -66,24 +66,24 @@ class _WrapperViewState extends State<WrapperView>
   @override
   void initState() {
     super.initState();
-    _creditCardNumbersTextEditingController = TextEditingController();
-    _creditCardHolderNameTextEditingController = TextEditingController();
-    _creditCardCvvTextEditingController = TextEditingController();
-    _creditCardNumbersTextFieldFocusNode = FocusNode();
-    _creditCardHolderNameTextFieldFocusNode = FocusNode();
-    _creditCardCvvTextFieldFocusNode = FocusNode();
-    _creditCardNumbersTextFieldFocusNode.addListener(_onFocusChange);
-    _creditCardHolderNameTextFieldFocusNode.addListener(_onFocusChange);
-    _creditCardCvvTextFieldFocusNode.addListener(_onFocusChange);
-    _creditCardNumberEnterAnimationController = AnimationController(
+    _paymentCardNumbersTextEditingController = TextEditingController();
+    _paymentCardHolderNameTextEditingController = TextEditingController();
+    _paymentCardCvvTextEditingController = TextEditingController();
+    _paymentCardNumbersTextFieldFocusNode = FocusNode();
+    _paymentCardHolderNameTextFieldFocusNode = FocusNode();
+    _paymentCardCvvTextFieldFocusNode = FocusNode();
+    _paymentCardNumbersTextFieldFocusNode.addListener(_onFocusChange);
+    _paymentCardHolderNameTextFieldFocusNode.addListener(_onFocusChange);
+    _paymentCardCvvTextFieldFocusNode.addListener(_onFocusChange);
+    _paymentCardNumberEnterAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 250),
     );
-    _creditCardNumberLeaveAnimationController = AnimationController(
+    _paymentCardNumberLeaveAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 100),
     );
-    _creditCardFlipAnimationController = AnimationController(
+    _paymentCardFlipAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
@@ -91,24 +91,24 @@ class _WrapperViewState extends State<WrapperView>
 
   @override
   void dispose() {
-    _creditCardNumbersTextEditingController.dispose();
-    _creditCardHolderNameTextEditingController.dispose();
-    _creditCardCvvTextEditingController.dispose();
-    _creditCardNumbersTextFieldFocusNode.dispose();
-    _creditCardHolderNameTextFieldFocusNode.dispose();
-    _creditCardCvvTextFieldFocusNode.dispose();
-    _creditCardNumbersTextFieldFocusNode.removeListener(_onFocusChange);
-    _creditCardHolderNameTextFieldFocusNode.removeListener(_onFocusChange);
-    _creditCardCvvTextFieldFocusNode.removeListener(_onFocusChange);
-    _creditCardNumberEnterAnimationController.dispose();
-    _creditCardNumberLeaveAnimationController.dispose();
-    _creditCardFlipAnimationController.dispose();
+    _paymentCardNumbersTextEditingController.dispose();
+    _paymentCardHolderNameTextEditingController.dispose();
+    _paymentCardCvvTextEditingController.dispose();
+    _paymentCardNumbersTextFieldFocusNode.dispose();
+    _paymentCardHolderNameTextFieldFocusNode.dispose();
+    _paymentCardCvvTextFieldFocusNode.dispose();
+    _paymentCardNumbersTextFieldFocusNode.removeListener(_onFocusChange);
+    _paymentCardHolderNameTextFieldFocusNode.removeListener(_onFocusChange);
+    _paymentCardCvvTextFieldFocusNode.removeListener(_onFocusChange);
+    _paymentCardNumberEnterAnimationController.dispose();
+    _paymentCardNumberLeaveAnimationController.dispose();
+    _paymentCardFlipAnimationController.dispose();
     super.dispose();
   }
 
   void _onFocusChange() {
-    if (_creditCardFlipAnimationController.value > 0.0) {
-      _creditCardFlipAnimationController.animateBack(
+    if (_paymentCardFlipAnimationController.value > 0.0) {
+      _paymentCardFlipAnimationController.animateBack(
         0,
         curve: Curves.easeInOut,
       );
@@ -117,26 +117,26 @@ class _WrapperViewState extends State<WrapperView>
       _monthDropdownHasFocus = false;
       _yearDropdownHasFocus = false;
     });
-    if (_creditCardNumbersTextFieldFocusNode.hasFocus) {
+    if (_paymentCardNumbersTextFieldFocusNode.hasFocus) {
       setState(() {
-        _creditCardFocusCoverOffset = const Offset(13, 112);
-        _creditCardFocusCoverSize = const Size(371, 53);
+        _paymentCardFocusCoverOffset = const Offset(13, 112);
+        _paymentCardFocusCoverSize = const Size(371, 53);
       });
       return;
     }
-    if (_creditCardHolderNameTextFieldFocusNode.hasFocus) {
+    if (_paymentCardHolderNameTextFieldFocusNode.hasFocus) {
       setState(() {
-        _creditCardFocusCoverOffset = const Offset(13, 186);
-        _creditCardFocusCoverSize = const Size(315, 63);
+        _paymentCardFocusCoverOffset = const Offset(13, 186);
+        _paymentCardFocusCoverSize = const Size(315, 63);
       });
       return;
     }
-    if (_creditCardCvvTextFieldFocusNode.hasFocus) {
+    if (_paymentCardCvvTextFieldFocusNode.hasFocus) {
       setState(() {
-        _creditCardFocusCoverOffset = Offset.zero;
-        _creditCardFocusCoverSize = const Size(430, 270);
+        _paymentCardFocusCoverOffset = Offset.zero;
+        _paymentCardFocusCoverSize = const Size(430, 270);
       });
-      _creditCardFlipAnimationController.animateTo(
+      _paymentCardFlipAnimationController.animateTo(
         1,
         curve: Curves.easeInOut,
       );
@@ -149,8 +149,8 @@ class _WrapperViewState extends State<WrapperView>
     return GestureDetector(
       onTap: () {
         setState(() {
-          _creditCardFocusCoverOffset = Offset.zero;
-          _creditCardFocusCoverSize = const Size(430, 270);
+          _paymentCardFocusCoverOffset = Offset.zero;
+          _paymentCardFocusCoverSize = const Size(430, 270);
           _monthDropdownHasFocus = false;
           _yearDropdownHasFocus = false;
         });
@@ -169,72 +169,74 @@ class _WrapperViewState extends State<WrapperView>
                     children: [
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: CreditCardForm(
-                          creditCardNumbersTextEditingController:
-                              _creditCardNumbersTextEditingController,
-                          onCreditCardNumbersValueChanged:
-                              _onCreditCardNumbersValueChanged,
-                          creditCardNumbersTextFieldFocusNode:
-                              _creditCardNumbersTextFieldFocusNode,
-                          creditCardHolderNameTextEditingController:
-                              _creditCardHolderNameTextEditingController,
-                          onCreditCardHolderNameValueChanged:
-                              (newCreditCardHolderNameValue) {
+                        child: PaymentCardForm(
+                          paymentCardNumbersTextEditingController:
+                              _paymentCardNumbersTextEditingController,
+                          onPaymentCardNumbersValueChanged:
+                              _onPaymentCardNumbersValueChanged,
+                          paymentCardNumbersTextFieldFocusNode:
+                              _paymentCardNumbersTextFieldFocusNode,
+                          paymentCardHolderNameTextEditingController:
+                              _paymentCardHolderNameTextEditingController,
+                          onPaymentCardHolderNameValueChanged:
+                              (newPaymentCardHolderNameValue) {
                             setState(() {
-                              _creditCardHolderName =
-                                  newCreditCardHolderNameValue;
-                              if (_creditCardHolderName.length == 1) {
-                                _allowEmptyCreditCardHolderNameAnimation = true;
+                              _paymentCardHolderName =
+                                  newPaymentCardHolderNameValue;
+                              if (_paymentCardHolderName.length == 1) {
+                                _allowEmptyPaymentCardHolderNameAnimation =
+                                    true;
                               }
                             });
                           },
-                          creditCardHolderNameTextFieldFocusNode:
-                              _creditCardHolderNameTextFieldFocusNode,
-                          creditCardCvvTextEditingController:
-                              _creditCardCvvTextEditingController,
-                          onCreditCardCvvValueChanged: (newCreditCardCvvValue) {
+                          paymentCardHolderNameTextFieldFocusNode:
+                              _paymentCardHolderNameTextFieldFocusNode,
+                          paymentCardCvvTextEditingController:
+                              _paymentCardCvvTextEditingController,
+                          onPaymentCardCvvValueChanged:
+                              (newPaymentCardCvvValue) {
                             setState(() {
-                              _creditCardCvv = newCreditCardCvvValue;
+                              _paymentCardCvv = newPaymentCardCvvValue;
                             });
                           },
-                          creditCardCvvTextFieldFocusNode:
-                              _creditCardCvvTextFieldFocusNode,
+                          paymentCardCvvTextFieldFocusNode:
+                              _paymentCardCvvTextFieldFocusNode,
                           months: _months,
                           years: _years,
                           monthDropdownHasFocus: _monthDropdownHasFocus,
                           yearDropdownHasFocus: _yearDropdownHasFocus,
                           onMonthDropdownValueChanged: (newValue) {
                             setState(() {
-                              _creditCardExpirationMonth = newValue;
+                              _paymentCardExpirationMonth = newValue;
                             });
                           },
                           onYearDropdownValueChanged: (newValue) {
                             setState(() {
-                              _creditCardExpirationYear = newValue;
+                              _paymentCardExpirationYear = newValue;
                             });
                           },
                           onMonthDropdownTapped: () {
                             setState(() {
-                              _creditCardFocusCoverOffset =
+                              _paymentCardFocusCoverOffset =
                                   const Offset(335, 190);
-                              _creditCardFocusCoverSize = const Size(81, 58);
+                              _paymentCardFocusCoverSize = const Size(81, 58);
                               _monthDropdownHasFocus = true;
                               _yearDropdownHasFocus = false;
                             });
                           },
                           onYearDropdownTapped: () {
                             setState(() {
-                              _creditCardFocusCoverOffset =
+                              _paymentCardFocusCoverOffset =
                                   const Offset(335, 190);
-                              _creditCardFocusCoverSize = const Size(81, 58);
+                              _paymentCardFocusCoverSize = const Size(81, 58);
                               _yearDropdownHasFocus = true;
                               _monthDropdownHasFocus = false;
                             });
                           },
                           submitButtonAction: () {
                             setState(() {
-                              _creditCardFocusCoverOffset = Offset.zero;
-                              _creditCardFocusCoverSize = const Size(430, 270);
+                              _paymentCardFocusCoverOffset = Offset.zero;
+                              _paymentCardFocusCoverSize = const Size(430, 270);
                               _monthDropdownHasFocus = false;
                               _yearDropdownHasFocus = false;
                             });
@@ -243,66 +245,67 @@ class _WrapperViewState extends State<WrapperView>
                       ),
                       Align(
                         alignment: Alignment.topCenter,
-                        child: CreditCard(
-                          creditCardNumberEnterAnimationController:
-                              _creditCardNumberEnterAnimationController,
-                          creditCardNumberLeaveAnimationController:
-                              _creditCardNumberLeaveAnimationController,
-                          creditCardFlipAnimationController:
-                              _creditCardFlipAnimationController,
-                          creditCardNumbers: _creditCardNumbers,
-                          creditCardHolderName: _creditCardHolderName,
-                          creditCardFocusCoverOffset:
-                              _creditCardFocusCoverOffset,
-                          onCreditCardFocusCoverOffsetChanged: (offset) {
+                        child: PaymentCard(
+                          paymentCardNumberEnterAnimationController:
+                              _paymentCardNumberEnterAnimationController,
+                          paymentCardNumberLeaveAnimationController:
+                              _paymentCardNumberLeaveAnimationController,
+                          paymentCardFlipAnimationController:
+                              _paymentCardFlipAnimationController,
+                          paymentCardNumbers: _paymentCardNumbers,
+                          paymentCardHolderName: _paymentCardHolderName,
+                          paymentCardFocusCoverOffset:
+                              _paymentCardFocusCoverOffset,
+                          onPaymentCardFocusCoverOffsetChanged: (offset) {
                             setState(() {
-                              _creditCardFocusCoverOffset = offset;
+                              _paymentCardFocusCoverOffset = offset;
                             });
                           },
-                          creditCardFocusCoverSize: _creditCardFocusCoverSize,
-                          onCreditCardFocusCoverSizeChanged: (size) {
+                          paymentCardFocusCoverSize: _paymentCardFocusCoverSize,
+                          onPaymentCardFocusCoverSizeChanged: (size) {
                             setState(() {
-                              _creditCardFocusCoverSize = size;
+                              _paymentCardFocusCoverSize = size;
                             });
                           },
-                          creditCardNumbersTextFieldFocusNode:
-                              _creditCardNumbersTextFieldFocusNode,
-                          creditCardHolderNameTextFieldFocusNode:
-                              _creditCardHolderNameTextFieldFocusNode,
-                          allowEmptyCreditCardHolderNameAnimation:
-                              _allowEmptyCreditCardHolderNameAnimation,
-                          creditCardExpirationMonth: _creditCardExpirationMonth,
-                          creditCardExpirationYear: _creditCardExpirationYear,
+                          paymentCardNumbersTextFieldFocusNode:
+                              _paymentCardNumbersTextFieldFocusNode,
+                          paymentCardHolderNameTextFieldFocusNode:
+                              _paymentCardHolderNameTextFieldFocusNode,
+                          allowEmptyPaymentCardHolderNameAnimation:
+                              _allowEmptyPaymentCardHolderNameAnimation,
+                          paymentCardExpirationMonth:
+                              _paymentCardExpirationMonth,
+                          paymentCardExpirationYear: _paymentCardExpirationYear,
                           monthDropdownHasFocus: _monthDropdownHasFocus,
                           yearDropdownHasFocus: _yearDropdownHasFocus,
                           expiresTextTapAction: () {
                             setState(() {
-                              _creditCardFocusCoverOffset =
+                              _paymentCardFocusCoverOffset =
                                   const Offset(335, 190);
-                              _creditCardFocusCoverSize = const Size(81, 58);
+                              _paymentCardFocusCoverSize = const Size(81, 58);
                               _monthDropdownHasFocus = true;
                               _yearDropdownHasFocus = false;
                             });
                           },
                           monthTextTapAction: () {
                             setState(() {
-                              _creditCardFocusCoverOffset =
+                              _paymentCardFocusCoverOffset =
                                   const Offset(335, 190);
-                              _creditCardFocusCoverSize = const Size(81, 58);
+                              _paymentCardFocusCoverSize = const Size(81, 58);
                               _monthDropdownHasFocus = true;
                               _yearDropdownHasFocus = false;
                             });
                           },
                           yearTextTapAction: () {
                             setState(() {
-                              _creditCardFocusCoverOffset =
+                              _paymentCardFocusCoverOffset =
                                   const Offset(335, 190);
-                              _creditCardFocusCoverSize = const Size(81, 58);
+                              _paymentCardFocusCoverSize = const Size(81, 58);
                               _yearDropdownHasFocus = true;
                               _monthDropdownHasFocus = false;
                             });
                           },
-                          creditCardCvv: _creditCardCvv,
+                          paymentCardCvv: _paymentCardCvv,
                         ),
                       ),
                     ],
@@ -317,68 +320,68 @@ class _WrapperViewState extends State<WrapperView>
     );
   }
 
-  void _onCreditCardNumbersValueChanged(String newValue) {
+  void _onPaymentCardNumbersValueChanged(String newValue) {
     var numbersValue = newValue.trim().replaceAll(' ', '');
-    var newCreditCardNumbersValueLength = numbersValue.length;
-    if (newCreditCardNumbersValueLength > _oldCreditCardNumbersValueLength) {
-      for (int i = _oldCreditCardNumbersValueLength;
-          i < newCreditCardNumbersValueLength;
+    var newPaymentCardNumbersValueLength = numbersValue.length;
+    if (newPaymentCardNumbersValueLength > _oldPaymentCardNumbersValueLength) {
+      for (int i = _oldPaymentCardNumbersValueLength;
+          i < newPaymentCardNumbersValueLength;
           i++) {
-        _creditCardNumbers[i] = CreditCardNumberModel(
+        _paymentCardNumbers[i] = PaymentCardNumberModel(
           value: (i >= 4 && i <= 11) ? '*' : numbersValue[i],
           isNewlyEnteredValue: true,
         );
       }
-      for (int i = newCreditCardNumbersValueLength;
-          i < _creditCardNumbers.length;
+      for (int i = newPaymentCardNumbersValueLength;
+          i < _paymentCardNumbers.length;
           i++) {
-        _creditCardNumbers[i] = CreditCardNumberModel(
+        _paymentCardNumbers[i] = PaymentCardNumberModel(
           value: '#',
           isNewlyEnteredValue: false,
         );
       }
-      for (int i = 0; i < _oldCreditCardNumbersValueLength; i++) {
-        _creditCardNumbers[i] = CreditCardNumberModel(
+      for (int i = 0; i < _oldPaymentCardNumbersValueLength; i++) {
+        _paymentCardNumbers[i] = PaymentCardNumberModel(
           value: (i >= 4 && i <= 11) ? '*' : numbersValue[i],
           isNewlyEnteredValue: false,
         );
       }
     } else {
-      for (int i = newCreditCardNumbersValueLength;
-          i < _oldCreditCardNumbersValueLength;
+      for (int i = newPaymentCardNumbersValueLength;
+          i < _oldPaymentCardNumbersValueLength;
           i++) {
-        _creditCardNumbers[i] = CreditCardNumberModel(
+        _paymentCardNumbers[i] = PaymentCardNumberModel(
           value: '#',
           isNewlyEnteredValue: true,
           leaveAnimatedValue: (i >= 4 && i <= 11)
               ? '*'
-              : _oldCreditCardNumbersValue.substring(
+              : _oldPaymentCardNumbersValue.substring(
                   i,
                   i + 1,
                 ),
         );
       }
       for (int i = 0; i < numbersValue.length; i++) {
-        _creditCardNumbers[i] = CreditCardNumberModel(
+        _paymentCardNumbers[i] = PaymentCardNumberModel(
           value: (i >= 4 && i <= 11) ? '*' : numbersValue[i],
           isNewlyEnteredValue: false,
         );
       }
-      for (int i = _oldCreditCardNumbersValueLength;
-          i < _creditCardNumbers.length;
+      for (int i = _oldPaymentCardNumbersValueLength;
+          i < _paymentCardNumbers.length;
           i++) {
-        _creditCardNumbers[i] = CreditCardNumberModel(
+        _paymentCardNumbers[i] = PaymentCardNumberModel(
           value: '#',
           isNewlyEnteredValue: false,
         );
       }
     }
-    _creditCardNumberLeaveAnimationController.reset();
-    _creditCardNumberLeaveAnimationController.forward();
-    _creditCardNumberEnterAnimationController.reset();
-    _creditCardNumberEnterAnimationController.forward();
-    _oldCreditCardNumbersValue = numbersValue;
-    _oldCreditCardNumbersValueLength = newCreditCardNumbersValueLength;
+    _paymentCardNumberLeaveAnimationController.reset();
+    _paymentCardNumberLeaveAnimationController.forward();
+    _paymentCardNumberEnterAnimationController.reset();
+    _paymentCardNumberEnterAnimationController.forward();
+    _oldPaymentCardNumbersValue = numbersValue;
+    _oldPaymentCardNumbersValueLength = newPaymentCardNumbersValueLength;
     setState(() {});
   }
 }
