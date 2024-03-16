@@ -183,6 +183,9 @@ class CreditCardForm extends StatelessWidget {
                     controller: creditCardCvvTextEditingController,
                     focusNode: creditCardCvvTextFieldFocusNode,
                     keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     maxLength: 4,
                     onChanged: onCreditCardCvvValueChanged,
                   ),

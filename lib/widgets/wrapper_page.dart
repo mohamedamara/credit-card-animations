@@ -22,6 +22,7 @@ class _WrapperViewState extends State<WrapperView>
 
   late AnimationController _creditCardNumberEnterAnimationController;
   late AnimationController _creditCardNumberLeaveAnimationController;
+  late AnimationController _creditCardFlipAnimationController;
 
   final List<CreditCardNumberModel> _creditCardNumbers = List.generate(
     16,
@@ -82,6 +83,10 @@ class _WrapperViewState extends State<WrapperView>
       vsync: this,
       duration: const Duration(milliseconds: 100),
     );
+    _creditCardFlipAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
   }
 
   @override
@@ -97,10 +102,17 @@ class _WrapperViewState extends State<WrapperView>
     _creditCardCvvTextFieldFocusNode.removeListener(_onFocusChange);
     _creditCardNumberEnterAnimationController.dispose();
     _creditCardNumberLeaveAnimationController.dispose();
+    _creditCardFlipAnimationController.dispose();
     super.dispose();
   }
 
   void _onFocusChange() {
+    if (_creditCardFlipAnimationController.value > 0.0) {
+      _creditCardFlipAnimationController.animateBack(
+        0,
+        curve: Curves.easeInOut,
+      );
+    }
     setState(() {
       _monthDropdownHasFocus = false;
       _yearDropdownHasFocus = false;
@@ -124,6 +136,10 @@ class _WrapperViewState extends State<WrapperView>
         _creditCardFocusCoverOffset = Offset.zero;
         _creditCardFocusCoverSize = const Size(430, 270);
       });
+      _creditCardFlipAnimationController.animateTo(
+        1,
+        curve: Curves.easeInOut,
+      );
       return;
     }
   }
@@ -232,6 +248,8 @@ class _WrapperViewState extends State<WrapperView>
                               _creditCardNumberEnterAnimationController,
                           creditCardNumberLeaveAnimationController:
                               _creditCardNumberLeaveAnimationController,
+                          creditCardFlipAnimationController:
+                              _creditCardFlipAnimationController,
                           creditCardNumbers: _creditCardNumbers,
                           creditCardHolderName: _creditCardHolderName,
                           creditCardFocusCoverOffset:
@@ -284,6 +302,7 @@ class _WrapperViewState extends State<WrapperView>
                               _monthDropdownHasFocus = false;
                             });
                           },
+                          creditCardCvv: _creditCardCvv,
                         ),
                       ),
                     ],
