@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:payment_card_animations/themes/custom_colors.dart';
 import 'package:payment_card_animations/themes/custom_text_styles.dart';
 
-import '../utils/blank_space_after_every_4_characters_input_formatter.dart';
+import '../../utils/blank_space_after_every_4_characters_input_formatter.dart';
 import 'custom_dropdown_button.dart';
 import 'custom_text_field.dart';
 import 'submit_button.dart';

@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:payment_card_animations/themes/custom_colors.dart';
 import 'package:payment_card_animations/themes/custom_text_styles.dart';
 
-import '../constants/assets_constants.dart';
-import '../utils/gesture_detector_with_mouse_hover.dart';
+import '../../constants/assets_constants.dart';
+import '../../utils/gesture_detector_with_mouse_hover.dart';
 import 'package:flutter/material.dart';
 
-import '../models/payment_card_number_model.dart';
+import '../../models/payment_card_number_model.dart';
 
 class PaymentCard extends StatelessWidget {
   const PaymentCard({

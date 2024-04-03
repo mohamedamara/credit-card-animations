@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:payment_card_animations/themes/custom_colors.dart';
 import 'package:payment_card_animations/themes/custom_text_styles.dart';
 
-import '../utils/gesture_detector_with_mouse_hover.dart';
+import '../../utils/gesture_detector_with_mouse_hover.dart';
 
 class SubmitButton extends StatelessWidget {
   const SubmitButton({

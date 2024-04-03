@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'payment_card.dart';
+import 'payment_card/payment_card.dart';
 import '../models/payment_card_number_model.dart';
-import 'payment_card_form.dart';
+import 'payment_card_form/payment_card_form.dart';
 
 class WrapperView extends StatefulWidget {
   const WrapperView({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './widgets/wrapper_page.dart';
+import 'widgets/wrapper_view.dart';
 import 'themes/custom_theme.dart';
 
 void main() {
