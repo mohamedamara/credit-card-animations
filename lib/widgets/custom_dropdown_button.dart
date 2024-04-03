@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:payment_card_animations/themes/custom_colors.dart';
+import 'package:payment_card_animations/themes/custom_text_styles.dart';
 
 class CustomDropdownButton<T> extends StatelessWidget {
   const CustomDropdownButton({
@@ -18,72 +20,57 @@ class CustomDropdownButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(
-        focusColor: Colors.blue.shade50,
-      ),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            color: hasFocus ? const Color(0xFF3d9cff) : const Color(0xFFced6e0),
-            width: 1,
-          ),
-          borderRadius: BorderRadius.circular(5),
-          boxShadow: hasFocus
-              ? [
-                  const BoxShadow(
-                    offset: Offset(0, 10),
-                    blurRadius: 20,
-                    spreadRadius: -13,
-                    color: Color.fromRGBO(32, 56, 117, 0.35),
-                  ),
-                ]
-              : null,
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: hasFocus
+              ? CustomColors.inputFocusedBorderColor
+              : CustomColors.inputUnfocusedBorderColor,
+          width: 1,
         ),
-        child: DropdownButtonFormField<T>(
-          padding: const EdgeInsets.only(left: 17, right: 10),
-          icon: const Icon(Icons.expand_more),
-          iconEnabledColor: const Color(0xFF1A3B5D),
-          iconSize: 28,
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-            hintStyle: TextStyle(
-              color: Color(0xFF1a3b5d),
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          hint: Text(
-            hintText,
-            style: const TextStyle(
-              color: Color(0xFF1a3b5d),
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          dropdownColor: Colors.white,
-          style: const TextStyle(
-            color: Color(0xFF1a3b5d),
-            fontSize: 18,
-            fontWeight: FontWeight.w400,
-          ),
-          items: items
-              .map(
-                (item) => DropdownMenuItem<T>(
-                  value: item,
-                  child: Text(
-                    item.toString(),
-                  ),
+        borderRadius: BorderRadius.circular(5),
+        boxShadow: hasFocus
+            ? [
+                const BoxShadow(
+                  offset: Offset(0, 10),
+                  blurRadius: 20,
+                  spreadRadius: -13,
+                  color: CustomColors.inputFocusedShadowColor,
                 ),
-              )
-              .toList(),
-          menuMaxHeight: 300,
-          onChanged: onChanged,
-          onTap: onTap,
+              ]
+            : null,
+      ),
+      child: DropdownButtonFormField<T>(
+        padding: const EdgeInsets.only(left: 17, right: 10),
+        icon: const Icon(Icons.expand_more),
+        iconEnabledColor: CustomColors.darkBlueColor,
+        iconSize: 28,
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+          hintStyle: CustomTextStyles.inputTextStyle,
         ),
+        hint: Text(
+          hintText,
+          style: CustomTextStyles.inputTextStyle,
+        ),
+        dropdownColor: Colors.white,
+        style: CustomTextStyles.inputTextStyle,
+        items: items
+            .map(
+              (item) => DropdownMenuItem<T>(
+                value: item,
+                child: Text(
+                  item.toString(),
+                ),
+              ),
+            )
+            .toList(),
+        menuMaxHeight: 300,
+        onChanged: onChanged,
+        onTap: onTap,
       ),
     );
   }

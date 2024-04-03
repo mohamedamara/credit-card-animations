@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import './widgets/wrapper_page.dart';
+import 'themes/custom_theme.dart';
 
 void main() {
   runApp(const App());
@@ -15,11 +15,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Payment card animations',
       themeMode: ThemeMode.light,
-      theme: ThemeData(
-        textTheme: GoogleFonts.sourceCodeProTextTheme(
-          Theme.of(context).textTheme,
-        ),
-      ),
+      theme: CustomTheme.getTheme(context),
       home: const WrapperView(),
     );
   }

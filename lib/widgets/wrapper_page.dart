@@ -55,8 +55,8 @@ class _WrapperViewState extends State<WrapperView>
   int _oldPaymentCardNumbersValueLength = 0;
   String _oldPaymentCardNumbersValue = '';
 
-  Offset _paymentCardFocusCoverOffset = Offset.zero;
-  Size _paymentCardFocusCoverSize = const Size(430, 270);
+  Offset _paymentCardFocusOverlayOffset = Offset.zero;
+  Size _paymentCardFocusOverlaySize = const Size(430, 270);
 
   bool _allowEmptyPaymentCardHolderNameAnimation = false;
 
@@ -119,22 +119,22 @@ class _WrapperViewState extends State<WrapperView>
     });
     if (_paymentCardNumbersTextFieldFocusNode.hasFocus) {
       setState(() {
-        _paymentCardFocusCoverOffset = const Offset(13, 112);
-        _paymentCardFocusCoverSize = const Size(371, 53);
+        _paymentCardFocusOverlayOffset = const Offset(13, 112);
+        _paymentCardFocusOverlaySize = const Size(371, 53);
       });
       return;
     }
     if (_paymentCardHolderNameTextFieldFocusNode.hasFocus) {
       setState(() {
-        _paymentCardFocusCoverOffset = const Offset(13, 186);
-        _paymentCardFocusCoverSize = const Size(315, 63);
+        _paymentCardFocusOverlayOffset = const Offset(13, 186);
+        _paymentCardFocusOverlaySize = const Size(315, 63);
       });
       return;
     }
     if (_paymentCardCvvTextFieldFocusNode.hasFocus) {
       setState(() {
-        _paymentCardFocusCoverOffset = Offset.zero;
-        _paymentCardFocusCoverSize = const Size(430, 270);
+        _paymentCardFocusOverlayOffset = Offset.zero;
+        _paymentCardFocusOverlaySize = const Size(430, 270);
       });
       _paymentCardFlipAnimationController.animateTo(
         1,
@@ -149,14 +149,13 @@ class _WrapperViewState extends State<WrapperView>
     return GestureDetector(
       onTap: () {
         setState(() {
-          _paymentCardFocusCoverOffset = Offset.zero;
-          _paymentCardFocusCoverSize = const Size(430, 270);
+          _paymentCardFocusOverlayOffset = Offset.zero;
+          _paymentCardFocusOverlaySize = const Size(430, 270);
           _monthDropdownHasFocus = false;
           _yearDropdownHasFocus = false;
         });
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFFDDEEFC),
         body: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -217,26 +216,27 @@ class _WrapperViewState extends State<WrapperView>
                           },
                           onMonthDropdownTapped: () {
                             setState(() {
-                              _paymentCardFocusCoverOffset =
+                              _paymentCardFocusOverlayOffset =
                                   const Offset(335, 190);
-                              _paymentCardFocusCoverSize = const Size(81, 58);
+                              _paymentCardFocusOverlaySize = const Size(81, 58);
                               _monthDropdownHasFocus = true;
                               _yearDropdownHasFocus = false;
                             });
                           },
                           onYearDropdownTapped: () {
                             setState(() {
-                              _paymentCardFocusCoverOffset =
+                              _paymentCardFocusOverlayOffset =
                                   const Offset(335, 190);
-                              _paymentCardFocusCoverSize = const Size(81, 58);
+                              _paymentCardFocusOverlaySize = const Size(81, 58);
                               _yearDropdownHasFocus = true;
                               _monthDropdownHasFocus = false;
                             });
                           },
                           submitButtonAction: () {
                             setState(() {
-                              _paymentCardFocusCoverOffset = Offset.zero;
-                              _paymentCardFocusCoverSize = const Size(430, 270);
+                              _paymentCardFocusOverlayOffset = Offset.zero;
+                              _paymentCardFocusOverlaySize =
+                                  const Size(430, 270);
                               _monthDropdownHasFocus = false;
                               _yearDropdownHasFocus = false;
                             });
@@ -254,17 +254,18 @@ class _WrapperViewState extends State<WrapperView>
                               _paymentCardFlipAnimationController,
                           paymentCardNumbers: _paymentCardNumbers,
                           paymentCardHolderName: _paymentCardHolderName,
-                          paymentCardFocusCoverOffset:
-                              _paymentCardFocusCoverOffset,
-                          onPaymentCardFocusCoverOffsetChanged: (offset) {
+                          paymentCardFocusOverlayOffset:
+                              _paymentCardFocusOverlayOffset,
+                          onPaymentCardFocusOverlayOffsetChanged: (offset) {
                             setState(() {
-                              _paymentCardFocusCoverOffset = offset;
+                              _paymentCardFocusOverlayOffset = offset;
                             });
                           },
-                          paymentCardFocusCoverSize: _paymentCardFocusCoverSize,
-                          onPaymentCardFocusCoverSizeChanged: (size) {
+                          paymentCardFocusOverlaySize:
+                              _paymentCardFocusOverlaySize,
+                          onPaymentCardFocusOverlaySizeChanged: (size) {
                             setState(() {
-                              _paymentCardFocusCoverSize = size;
+                              _paymentCardFocusOverlaySize = size;
                             });
                           },
                           paymentCardNumbersTextFieldFocusNode:
@@ -280,27 +281,27 @@ class _WrapperViewState extends State<WrapperView>
                           yearDropdownHasFocus: _yearDropdownHasFocus,
                           expiresTextTapAction: () {
                             setState(() {
-                              _paymentCardFocusCoverOffset =
+                              _paymentCardFocusOverlayOffset =
                                   const Offset(335, 190);
-                              _paymentCardFocusCoverSize = const Size(81, 58);
+                              _paymentCardFocusOverlaySize = const Size(81, 58);
                               _monthDropdownHasFocus = true;
                               _yearDropdownHasFocus = false;
                             });
                           },
                           monthTextTapAction: () {
                             setState(() {
-                              _paymentCardFocusCoverOffset =
+                              _paymentCardFocusOverlayOffset =
                                   const Offset(335, 190);
-                              _paymentCardFocusCoverSize = const Size(81, 58);
+                              _paymentCardFocusOverlaySize = const Size(81, 58);
                               _monthDropdownHasFocus = true;
                               _yearDropdownHasFocus = false;
                             });
                           },
                           yearTextTapAction: () {
                             setState(() {
-                              _paymentCardFocusCoverOffset =
+                              _paymentCardFocusOverlayOffset =
                                   const Offset(335, 190);
-                              _paymentCardFocusCoverSize = const Size(81, 58);
+                              _paymentCardFocusOverlaySize = const Size(81, 58);
                               _yearDropdownHasFocus = true;
                               _monthDropdownHasFocus = false;
                             });

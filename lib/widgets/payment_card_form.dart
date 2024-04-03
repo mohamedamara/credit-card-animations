@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:payment_card_animations/themes/custom_colors.dart';
+import 'package:payment_card_animations/themes/custom_text_styles.dart';
 
 import '../utils/blank_space_after_every_4_characters_input_formatter.dart';
 import 'custom_dropdown_button.dart';
@@ -65,7 +67,7 @@ class PaymentCardForm extends StatelessWidget {
             offset: Offset(0, 30),
             blurRadius: 60,
             spreadRadius: 0,
-            color: Color.fromRGBO(90, 116, 148, 0.4),
+            color: CustomColors.paymentCardformShadowColor,
           )
         ],
       ),
@@ -76,11 +78,7 @@ class PaymentCardForm extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               'Card Number',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF1A3B5D),
-              ),
+              style: CustomTextStyles.inputLabelTextStyle,
             ),
           ),
           const SizedBox(height: 5),
@@ -100,11 +98,7 @@ class PaymentCardForm extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               'Card Holder',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF1A3B5D),
-              ),
+              style: CustomTextStyles.inputLabelTextStyle,
             ),
           ),
           const SizedBox(height: 5),
@@ -128,11 +122,7 @@ class PaymentCardForm extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Expiration Date',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF1A3B5D),
-                        ),
+                        style: CustomTextStyles.inputLabelTextStyle,
                       ),
                     ),
                     const SizedBox(height: 5),
@@ -164,11 +154,7 @@ class PaymentCardForm extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'CVV',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF1A3B5D),
-                      ),
+                      style: CustomTextStyles.inputLabelTextStyle,
                     ),
                   ),
                   const SizedBox(height: 5),

@@ -1,7 +1,10 @@
 import 'dart:math';
 
+import 'package:payment_card_animations/themes/custom_colors.dart';
+import 'package:payment_card_animations/themes/custom_text_styles.dart';
+
 import '../constants/assets_constants.dart';
-import '/widgets/gesture_detector_with_mouse_hover.dart';
+import '../utils/gesture_detector_with_mouse_hover.dart';
 import 'package:flutter/material.dart';
 
 import '../models/payment_card_number_model.dart';
@@ -14,10 +17,10 @@ class PaymentCard extends StatelessWidget {
     required this.paymentCardFlipAnimationController,
     required this.paymentCardNumbers,
     required this.paymentCardHolderName,
-    required this.paymentCardFocusCoverOffset,
-    required this.onPaymentCardFocusCoverOffsetChanged,
-    required this.paymentCardFocusCoverSize,
-    required this.onPaymentCardFocusCoverSizeChanged,
+    required this.paymentCardFocusOverlayOffset,
+    required this.onPaymentCardFocusOverlayOffsetChanged,
+    required this.paymentCardFocusOverlaySize,
+    required this.onPaymentCardFocusOverlaySizeChanged,
     required this.paymentCardNumbersTextFieldFocusNode,
     required this.paymentCardHolderNameTextFieldFocusNode,
     required this.allowEmptyPaymentCardHolderNameAnimation,
@@ -36,10 +39,10 @@ class PaymentCard extends StatelessWidget {
   final AnimationController paymentCardFlipAnimationController;
   final List<PaymentCardNumberModel> paymentCardNumbers;
   final String paymentCardHolderName;
-  final Offset paymentCardFocusCoverOffset;
-  final void Function(Offset offset) onPaymentCardFocusCoverOffsetChanged;
-  final Size paymentCardFocusCoverSize;
-  final void Function(Size size) onPaymentCardFocusCoverSizeChanged;
+  final Offset paymentCardFocusOverlayOffset;
+  final void Function(Offset offset) onPaymentCardFocusOverlayOffsetChanged;
+  final Size paymentCardFocusOverlaySize;
+  final void Function(Size size) onPaymentCardFocusOverlaySizeChanged;
   final FocusNode paymentCardNumbersTextFieldFocusNode;
   final FocusNode paymentCardHolderNameTextFieldFocusNode;
   final bool allowEmptyPaymentCardHolderNameAnimation;
@@ -80,7 +83,7 @@ class PaymentCard extends StatelessWidget {
                         offset: Offset(0, 20),
                         blurRadius: 60,
                         spreadRadius: 0,
-                        color: Color.fromRGBO(14, 42, 90, 0.55),
+                        color: CustomColors.paymentCardShadowColor,
                       ),
                     ],
                   ),
@@ -105,7 +108,7 @@ class PaymentCard extends StatelessWidget {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    color: const Color.fromRGBO(6, 2, 29, 0.45),
+                    color: CustomColors.paymentCardOverlayColor,
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
@@ -137,16 +140,17 @@ class PaymentCard extends StatelessWidget {
                       AnimatedPositioned(
                         duration: const Duration(milliseconds: 350),
                         curve: Curves.easeInOut,
-                        top: paymentCardFocusCoverOffset.dy,
-                        left: paymentCardFocusCoverOffset.dx,
+                        top: paymentCardFocusOverlayOffset.dy,
+                        left: paymentCardFocusOverlayOffset.dx,
                         child: SizedBox(
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 350),
                             curve: Curves.easeInOut,
-                            height: paymentCardFocusCoverSize.height,
-                            width: paymentCardFocusCoverSize.width,
+                            height: paymentCardFocusOverlaySize.height,
+                            width: paymentCardFocusOverlaySize.width,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF08142F).withOpacity(
+                              color: CustomColors.paymentCardFocusOverlayColor
+                                  .withOpacity(
                                 (paymentCardNumbersTextFieldFocusNode
                                             .hasFocus ||
                                         paymentCardHolderNameTextFieldFocusNode
@@ -214,12 +218,8 @@ class PaymentCard extends StatelessWidget {
                                           child: Text(
                                             paymentCardNumbers[i]
                                                 .leaveAnimatedValue,
-                                            style: const TextStyle(
-                                              fontSize: 30,
-                                              color: Colors.white,
-                                              letterSpacing: 0,
-                                              height: 1,
-                                            ),
+                                            style: CustomTextStyles
+                                                .paymentCardNumbersTextStyle,
                                           ),
                                         ),
                                       ),
@@ -239,12 +239,8 @@ class PaymentCard extends StatelessWidget {
                                           ),
                                           child: Text(
                                             paymentCardNumbers[i].value,
-                                            style: const TextStyle(
-                                              fontSize: 30,
-                                              color: Colors.white,
-                                              letterSpacing: 0,
-                                              height: 1,
-                                            ),
+                                            style: CustomTextStyles
+                                                .paymentCardNumbersTextStyle,
                                           ),
                                         ),
                                       ),
@@ -253,12 +249,8 @@ class PaymentCard extends StatelessWidget {
                                 ] else ...[
                                   Text(
                                     paymentCardNumbers[i].value,
-                                    style: const TextStyle(
-                                      fontSize: 30,
-                                      color: Colors.white,
-                                      letterSpacing: 0,
-                                      height: 1,
-                                    ),
+                                    style: CustomTextStyles
+                                        .paymentCardNumbersTextStyle,
                                   )
                                 ],
                                 if ((i + 1) % 4 == 0 && (i != 15)) ...[
@@ -282,11 +274,8 @@ class PaymentCard extends StatelessWidget {
                             children: [
                               Text(
                                 'Card Holder',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white.withOpacity(0.7),
-                                ),
+                                style: CustomTextStyles
+                                    .paymentCardFrontSideLabelTextStyle,
                               ),
                               SizedBox(
                                 height: 35,
@@ -321,13 +310,8 @@ class PaymentCard extends StatelessWidget {
                                                     offset: offset,
                                                     child: Text(
                                                       'full name'.toUpperCase(),
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        letterSpacing: 1,
-                                                      ),
+                                                      style: CustomTextStyles
+                                                          .paymentCardHolderNameAndExpirationDateTextStyle,
                                                     ),
                                                   ),
                                                 );
@@ -338,12 +322,8 @@ class PaymentCard extends StatelessWidget {
                                       ] else ...[
                                         Text(
                                           'full name'.toUpperCase(),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 1,
-                                          ),
+                                          style: CustomTextStyles
+                                              .paymentCardHolderNameAndExpirationDateTextStyle,
                                         ),
                                       ],
                                     ],
@@ -373,13 +353,8 @@ class PaymentCard extends StatelessWidget {
                                                   offset: offset,
                                                   child: Text(
                                                     'full name'.toUpperCase(),
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      letterSpacing: 1,
-                                                    ),
+                                                    style: CustomTextStyles
+                                                        .paymentCardHolderNameAndExpirationDateTextStyle,
                                                   ),
                                                 ),
                                               );
@@ -425,14 +400,8 @@ class PaymentCard extends StatelessWidget {
                                                           paymentCardHolderName[
                                                                   i]
                                                               .toUpperCase(),
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            letterSpacing: 1,
-                                                          ),
+                                                          style: CustomTextStyles
+                                                              .paymentCardHolderNameAndExpirationDateTextStyle,
                                                         ),
                                                       ),
                                                     );
@@ -474,14 +443,8 @@ class PaymentCard extends StatelessWidget {
                                                               .toUpperCase(),
                                                           overflow: TextOverflow
                                                               .ellipsis,
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            letterSpacing: 1,
-                                                          ),
+                                                          style: CustomTextStyles
+                                                              .paymentCardHolderNameAndExpirationDateTextStyle,
                                                         ),
                                                       ),
                                                     );
@@ -510,11 +473,8 @@ class PaymentCard extends StatelessWidget {
                               onTap: expiresTextTapAction,
                               child: Text(
                                 'Expires',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white.withOpacity(0.7),
-                                ),
+                                style: CustomTextStyles
+                                    .paymentCardFrontSideLabelTextStyle,
                               ),
                             ),
                             Row(
@@ -564,23 +524,15 @@ class PaymentCard extends StatelessWidget {
                                       paymentCardExpirationMonth ?? 'MM',
                                       key: ValueKey<String>(
                                           paymentCardExpirationMonth ?? 'MM'),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: 1,
-                                      ),
+                                      style: CustomTextStyles
+                                          .paymentCardHolderNameAndExpirationDateTextStyle,
                                     ),
                                   ),
                                 ),
                                 Text(
                                   '/'.toUpperCase(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                    letterSpacing: 1,
-                                  ),
+                                  style: CustomTextStyles
+                                      .paymentCardHolderNameAndExpirationDateTextStyle,
                                 ),
                                 GestureDetectorWithMouseHover(
                                   onTap: yearTextTapAction,
@@ -625,12 +577,8 @@ class PaymentCard extends StatelessWidget {
                                           'YY',
                                       key: ValueKey<String>(
                                           paymentCardExpirationYear ?? 'YY'),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                        letterSpacing: 1,
-                                      ),
+                                      style: CustomTextStyles
+                                          .paymentCardHolderNameAndExpirationDateTextStyle,
                                     ),
                                   ),
                                 ),
@@ -656,7 +604,7 @@ class PaymentCard extends StatelessWidget {
                         child: Container(
                           height: 50,
                           width: 430,
-                          color: const Color.fromRGBO(0, 0, 19, 0.8),
+                          color: CustomColors.paymentCardMagneticStripeColor,
                         ),
                       ),
                       Positioned(
@@ -670,11 +618,8 @@ class PaymentCard extends StatelessWidget {
                                 padding: EdgeInsets.only(right: 10),
                                 child: Text(
                                   'CVV',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  style: CustomTextStyles
+                                      .paymentCardBackSideLabelTextStyle,
                                 ),
                               ),
                               const SizedBox(height: 3),
@@ -698,11 +643,8 @@ class PaymentCard extends StatelessWidget {
                                           i++) ...[
                                         const Text(
                                           '*',
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xFF1A3B5D),
-                                          ),
+                                          style: CustomTextStyles
+                                              .paymentCardCvvTextStyle,
                                         ),
                                       ],
                                     ],
