@@ -256,18 +256,8 @@ class _WrapperViewState extends State<WrapperView>
                           paymentCardHolderName: _paymentCardHolderName,
                           paymentCardFocusOverlayOffset:
                               _paymentCardFocusOverlayOffset,
-                          onPaymentCardFocusOverlayOffsetChanged: (offset) {
-                            setState(() {
-                              _paymentCardFocusOverlayOffset = offset;
-                            });
-                          },
                           paymentCardFocusOverlaySize:
                               _paymentCardFocusOverlaySize,
-                          onPaymentCardFocusOverlaySizeChanged: (size) {
-                            setState(() {
-                              _paymentCardFocusOverlaySize = size;
-                            });
-                          },
                           paymentCardNumbersTextFieldFocusNode:
                               _paymentCardNumbersTextFieldFocusNode,
                           paymentCardHolderNameTextFieldFocusNode:
