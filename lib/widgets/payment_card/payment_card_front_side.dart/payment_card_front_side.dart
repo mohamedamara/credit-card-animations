@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payment_card_animations/widgets/payment_card/payment_card_front_side.dart/payment_card_expiration.dart';
-import 'package:payment_card_animations/widgets/payment_card/payment_card_front_side.dart/payment_card_holder_name.dart';
+import 'package:payment_card_animations/widgets/payment_card/payment_card_front_side.dart/payment_card_holder_name/payment_card_holder_name.dart';
 import 'package:payment_card_animations/widgets/payment_card/payment_card_front_side.dart/payment_card_numbers.dart';
 
 import '../../../models/payment_card_number_model.dart';
