@@ -157,7 +157,7 @@ class _WrapperViewState extends State<WrapperView>
       },
       child: Scaffold(
         body: Center(
-          child: SingleChildScrollView(
+          child: FittedBox(
             child: Column(
               children: [
                 const SizedBox(height: 50),
