@@ -1,12 +1,12 @@
 {
-    "name": "payment_card_animations",
-    "short_name": "payment_card_animations",
+    "name": "Payment card animations",
+    "short_name": "Payment card animations",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#F5F8F5",
+    "theme_color": "#0686FD",
+    "description": "Payment card animations",
+    "orientation": "portrait",
     "prefer_related_applications": false,
     "icons": [
         {
