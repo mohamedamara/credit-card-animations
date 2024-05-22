@@ -18,18 +18,18 @@
 
     <meta charset="UTF-8" />
     <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-    <meta name="description" content="Payment card animations" />
+    <meta name="description" content="A new Flutter project." />
 
     <!-- iOS meta tags & icons -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="Payment card animations" />
+    <meta name="apple-mobile-web-app-title" content="payment_card_animations" />
     <link rel="apple-touch-icon" href="icons/Icon-192.png" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png" />
 
-    <title>Payment card animations</title>
+    <title>payment_card_animations</title>
     <link rel="manifest" href="manifest.json" />
 
     <!-- Custom CSS styling -->
@@ -173,34 +173,8 @@
         }
       }
     </style>
-
-    <script>
-      // The value below is injected by flutter build, do not touch.
-      const serviceWorkerVersion = null;
-    </script>
-    <!-- This script adds the flutter initialization JS code -->
-    <script src="flutter.js" defer></script>
   </head>
   <body>
-    <div class="main-content" id="loader-content">
-      <progress class="pure-material-progress-circular" />
-    </div>
-    <script>
-      window.addEventListener("load", function (ev) {
-        const loaderContent = document.getElementById("loader-content");
-        // Download main.dart.js
-        _flutter.loader.loadEntrypoint({
-          serviceWorker: {
-            serviceWorkerVersion: serviceWorkerVersion,
-          },
-          onEntrypointLoaded: function (engineInitializer) {
-            engineInitializer.initializeEngine().then(function (appRunner) {
-              loaderContent.remove();
-              appRunner.runApp();
-            });
-          },
-        });
-      });
-    </script>
+    <script src="flutter_bootstrap.js" async></script>
   </body>
 </html>
